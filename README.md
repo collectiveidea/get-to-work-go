@@ -12,9 +12,14 @@ $ get-to-work init
 Follow the directions on the screen.
 
 ### Start a Timer
-
+Start a new timer with the following command:
 ```shell
 $ get-to-work start [Pivotal Tracker URL]
+```
+
+Start your last timer with the following:
+```shell
+$ get-to-work start
 ```
 
 ### Stop a Timer
