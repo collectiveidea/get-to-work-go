@@ -5,5 +5,5 @@ Start and stop project specific, annotated Harvest timers with information from 
 
 Navigate to your project directory and initialize `get-to-work`:
 ```shell
-#> get-to-work init .
+#> get-to-work init
 ```
