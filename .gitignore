@@ -14,5 +14,5 @@
 .glide/
 get-to-work
 .get-to-work
-bin/get-to-work-go
+bin/get-to-work
 pkg
