@@ -1,0 +1,74 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/BurntSushi/toml",
+			"repository": "https://github.com/BurntSushi/toml",
+			"revision": "a368813c5e648fee92e5f6c30e3944ff9d5e8895",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/adlio/harvest",
+			"repository": "https://github.com/adlio/harvest",
+			"revision": "79c2722545cc28577d5d5d31e896afdd79e3473f",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/howeyc/gopass",
+			"repository": "https://github.com/howeyc/gopass",
+			"revision": "bf9dde6d0d2c004a008c27aaee91170c786f6db8",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/pivotal/gumshoe/trackerapi",
+			"repository": "https://github.com/pivotal/gumshoe",
+			"revision": "c37f9d3b52f0d01fd54c688645fe217667f1158f",
+			"branch": "master",
+			"path": "/trackerapi"
+		},
+		{
+			"importpath": "github.com/pkg/errors",
+			"repository": "https://github.com/pkg/errors",
+			"revision": "c605e284fe17294bda444b34710735b29d1a9d90",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/segmentio/go-prompt",
+			"repository": "https://github.com/segmentio/go-prompt",
+			"revision": "f0d19b6901ade831d5a3204edc0d6a7d6457fbb2",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/urfave/cli",
+			"repository": "https://github.com/urfave/cli",
+			"revision": "f017f86fccc5a039a98f23311f34fdf78b014f78",
+			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/crypto/ssh/terminal",
+			"repository": "https://go.googlesource.com/crypto",
+			"revision": "b176d7def5d71bdd214203491f89843ed217f420",
+			"branch": "master",
+			"path": "/ssh/terminal"
+		},
+		{
+			"importpath": "golang.org/x/sys/unix",
+			"repository": "https://go.googlesource.com/sys",
+			"revision": "c84c1ab9fd18cdd4c23dd021c10f5f46dea95e46",
+			"branch": "master",
+			"path": "/unix"
+		},
+		{
+			"importpath": "gopkg.in/urfave/cli.v1",
+			"repository": "https://gopkg.in/urfave/cli.v1",
+			"revision": "cfb38830724cc34fedffe9a2a29fb54fa9169cd1",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/yaml.v2",
+			"repository": "https://gopkg.in/yaml.v2",
+			"revision": "eb3733d160e74a9c7e442f435eb3bea458e1d19f",
+			"branch": "v2"
+		}
+	]
+}
