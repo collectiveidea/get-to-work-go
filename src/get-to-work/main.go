@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"get-to-work-go/commands"
+	"get-to-work/commands"
 
 	"github.com/urfave/cli"
 )
