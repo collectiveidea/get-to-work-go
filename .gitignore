@@ -12,7 +12,5 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
-get-to-work
-.get-to-work
 bin/get-to-work-go
 pkg

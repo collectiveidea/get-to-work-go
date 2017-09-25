@@ -3,8 +3,8 @@ package commands
 import (
 	"os"
 
-	"get-to-work-go/prompts"
-	"get-to-work-go/service"
+	"get-to-work/prompts"
+	"get-to-work/service"
 
 	"github.com/urfave/cli"
 )
