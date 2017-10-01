@@ -36,7 +36,7 @@ func (pt PivotalTrackerService) GetUsername() (username string) {
 }
 
 // SignIn signs a user into
-func (pt PivotalTrackerService) SignIn(email string, password string) {
+func (pt *PivotalTrackerService) SignIn(email string, password string) {
 	config := trackerapi.NewConfiguration()
 	client, err := trackerapi.NewClient(config)
 

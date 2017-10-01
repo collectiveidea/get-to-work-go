@@ -21,8 +21,6 @@ func FullName(s Service) string {
 
 // SaveCredentials persists credentials to the OSX keychain
 func SaveCredentials(s Service, username string, password string) (err error) {
-	fmt.Print("Saving Credentials")
-	fmt.Print(FullName(s))
 	err = keyring.Set(FullName(s), username, password)
 	return
 }

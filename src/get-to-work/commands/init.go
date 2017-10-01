@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"get-to-work/config"
 	"get-to-work/prompts"
 	"get-to-work/service"
@@ -16,6 +17,8 @@ var Init = cli.Command{
 		// Create a configuration file
 		cfg, _ := config.DefaultConfig()
 
+		fmt.Print("\n\n")
+
 		// Prompt for Harvest credentials
 		subdomain, email, password := prompts.Harvest()
 		cfg.Harvest.Subdomain = subdomain
@@ -30,6 +33,8 @@ var Init = cli.Command{
 		}
 
 		service.SaveCredentials(harvest, email, password)
+
+		fmt.Print("\n\n")
 
 		email, password = prompts.PivotalTracker()
 		cfg.PivotalTracker.Username = email
