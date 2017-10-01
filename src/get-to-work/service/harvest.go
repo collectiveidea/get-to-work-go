@@ -6,6 +6,7 @@ import (
 
 // HarvestService defines a harvest service
 type HarvestService struct {
+	Name string
 	Service
 	User *harvest.User
 }
@@ -17,7 +18,14 @@ type WhoAmIResponse struct {
 
 // NewHarvestService creates a HarvestService instance
 func NewHarvestService() (harvestService *HarvestService) {
-	return &HarvestService{}
+	harvestService = &HarvestService{Name: "Harvest"}
+	return
+}
+
+// GetName returns the name value
+func (hs *HarvestService) GetName() (name string) {
+	name = hs.Name
+	return
 }
 
 // SignIn signs a harvest user in

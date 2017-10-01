@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"os"
-
+	"fmt"
+	"get-to-work/config"
 	"get-to-work/prompts"
 	"get-to-work/service"
 
@@ -15,10 +15,16 @@ var Init = cli.Command{
 	Usage: "Prepare the current project directory for go-to-work",
 	Action: func(c *cli.Context) error {
 		// Create a configuration file
-		os.Create(".get-to-work")
+		cfg, _ := config.DefaultConfig()
+
+		fmt.Print("\n\n")
 
 		// Prompt for Harvest credentials
 		subdomain, email, password := prompts.Harvest()
+		cfg.Harvest.Subdomain = subdomain
+		cfg.Harvest.Username = email
+		cfg.SaveDefaultConfig()
+
 		harvest := service.NewHarvestService()
 		err := harvest.SignIn(subdomain, email, password)
 
@@ -26,10 +32,17 @@ var Init = cli.Command{
 			println("Error: Harvest Authentication failed.")
 		}
 
-		println("")
+		service.SaveCredentials(harvest, email, password)
+
+		fmt.Print("\n\n")
+
 		email, password = prompts.PivotalTracker()
+		cfg.PivotalTracker.Username = email
+		cfg.SaveDefaultConfig()
+
 		pt := service.NewPivotalTrackerService()
 		pt.SignIn(email, password)
+		service.SaveCredentials(pt, email, password)
 
 		return nil
 	},
