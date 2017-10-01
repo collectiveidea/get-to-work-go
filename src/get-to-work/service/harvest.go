@@ -1,8 +1,13 @@
 package service
 
 import (
+	"get-to-work/config"
+
 	"github.com/adlio/harvest"
+	"github.com/tmc/keyring"
 )
+
+const keyringService = "GetToWork::Harvest"
 
 // HarvestService defines a harvest service
 type HarvestService struct {
@@ -37,4 +42,19 @@ func (hs *HarvestService) SignIn(subdomain string, email string, password string
 	}
 
 	return err
+}
+
+// SaveCredentials persists credentials to the OSX keychain
+func (hs *HarvestService) SaveCredentials(username string, password string) (err error) {
+	err = keyring.Set(keyringService, username, password)
+	return
+}
+
+// LoadCredentials returns the username and password for the harvest service
+func (hs *HarvestService) LoadCredentials() (username string, password string, e error) {
+	cfg, _ := config.DefaultConfig()
+	username = cfg.Harvest.Username
+	password, _ = keyring.Get(keyringService, username)
+
+	return
 }

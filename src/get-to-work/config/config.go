@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+const defaultConfigPath = ".get-to-work"
+
 // HarvestConfig is a struct that saves Harvest configuration information
 type HarvestConfig struct {
 	Subdomain string `json:"subdomain"`
@@ -44,4 +46,10 @@ func (config *Config) Save(path string) (err error) {
 	ioutil.WriteFile(path, configJSON, 0644)
 
 	return err
+}
+
+// DefaultConfig returns the defualt config from ".get-to-work"
+func DefaultConfig() (config Config, e error) {
+	cfg, err := FromFile(defaultConfigPath)
+	return cfg, err
 }

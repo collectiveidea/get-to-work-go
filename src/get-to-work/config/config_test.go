@@ -1,6 +1,7 @@
 package config
 
 import (
+	"get-to-work/config"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -9,8 +10,7 @@ import (
 )
 
 func TestFromFileNonExistant(t *testing.T) {
-	path := ".test-config"
-	_, err := FromFile(path)
+	_, err := config.DefaultConfig()
 
 	if err != nil {
 		t.Error("FromFile should not raise an error")

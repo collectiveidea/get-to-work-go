@@ -1,9 +1,9 @@
 package commands
 
 import (
+	"get-to-work/config"
 	"get-to-work/prompts"
 	"get-to-work/service"
-	"get-to-work/config"
 
 	"github.com/urfave/cli"
 )
@@ -20,19 +20,17 @@ var Init = cli.Command{
 		// Prompt for Harvest credentials
 		subdomain, email, password := prompts.Harvest()
 		cfg.Harvest.Subdomain = subdomain
-		cfgErr := cfg.Save(cfgFile)
+		cfg.Harvest.Username = email
+		cfg.Save(cfgFile)
 
-		if cfgErr != nil {
-
-		}
 		harvest := service.NewHarvestService()
 		err := harvest.SignIn(subdomain, email, password)
-
-
 
 		if err != nil {
 			println("Error: Harvest Authentication failed.")
 		}
+
+		harvest.SaveCredentials(email, password)
 
 		email, password = prompts.PivotalTracker()
 		pt := service.NewPivotalTrackerService()
