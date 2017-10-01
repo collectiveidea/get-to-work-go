@@ -72,6 +72,12 @@
 			"path": "/assert"
 		},
 		{
+			"importpath": "github.com/tmc/keyring",
+			"repository": "https://github.com/tmc/keyring",
+			"revision": "06e6283d50adc5f8fcdb3cdf33ee1244d4400ae1",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/urfave/cli",
 			"repository": "https://github.com/urfave/cli",
 			"revision": "f017f86fccc5a039a98f23311f34fdf78b014f78",
