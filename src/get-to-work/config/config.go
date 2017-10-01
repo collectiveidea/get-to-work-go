@@ -2,12 +2,16 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
 
 const defaultConfigPath = ".get-to-work"
+
+// PivotalTrackerConfig is a struct that saves PT confituration information
+type PivotalTrackerConfig struct {
+	Username string `json:"username"`
+}
 
 // HarvestConfig is a struct that saves Harvest configuration information
 type HarvestConfig struct {
@@ -17,12 +21,12 @@ type HarvestConfig struct {
 
 // Config is a struct that contains configuration information
 type Config struct {
-	Harvest HarvestConfig `json:"harvest"`
+	Harvest        HarvestConfig        `json:"harvest"`
+	PivotalTracker PivotalTrackerConfig `json:"pivotal_tracker"`
 }
 
 // FromFile returns a Config given a file path.
 func FromFile(path string) (cfg Config, e error) {
-	fmt.Print(path)
 	config := Config{}
 
 	_, err := os.Stat(path)
@@ -52,4 +56,9 @@ func (config *Config) Save(path string) (err error) {
 func DefaultConfig() (config Config, e error) {
 	cfg, err := FromFile(defaultConfigPath)
 	return cfg, err
+}
+
+func (config *Config) SaveDefaultConfig() (err error) {
+	err = config.Save(defaultConfigPath)
+	return
 }

@@ -14,14 +14,13 @@ var Init = cli.Command{
 	Usage: "Prepare the current project directory for go-to-work",
 	Action: func(c *cli.Context) error {
 		// Create a configuration file
-		cfgFile := ".get-to-work"
-		cfg, _ := config.FromFile(cfgFile)
+		cfg, _ := config.DefaultConfig()
 
 		// Prompt for Harvest credentials
 		subdomain, email, password := prompts.Harvest()
 		cfg.Harvest.Subdomain = subdomain
 		cfg.Harvest.Username = email
-		cfg.Save(cfgFile)
+		cfg.SaveDefaultConfig()
 
 		harvest := service.NewHarvestService()
 		err := harvest.SignIn(subdomain, email, password)
@@ -30,11 +29,16 @@ var Init = cli.Command{
 			println("Error: Harvest Authentication failed.")
 		}
 
-		harvest.SaveCredentials(email, password)
+		service.SaveCredentials(harvest, email, password)
 
 		email, password = prompts.PivotalTracker()
+		cfg.PivotalTracker.Username = email
+		cfg.SaveDefaultConfig()
+
 		pt := service.NewPivotalTrackerService()
 		pt.SignIn(email, password)
+		service.SaveCredentials(pt, email, password)
+
 		return nil
 	},
 }

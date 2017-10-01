@@ -1,7 +1,6 @@
 package config
 
 import (
-	"get-to-work/config"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -10,7 +9,8 @@ import (
 )
 
 func TestFromFileNonExistant(t *testing.T) {
-	_, err := config.DefaultConfig()
+	path := ".non-existant-test"
+	_, err := FromFile(path)
 
 	if err != nil {
 		t.Error("FromFile should not raise an error")
@@ -24,6 +24,9 @@ func TestFromFileNonExistant(t *testing.T) {
 	expectedJSON := `{
   "harvest": {
     "subdomain": "",
+    "username": ""
+  },
+  "pivotal_tracker": {
     "username": ""
   }
 }`
@@ -39,7 +42,10 @@ func TestFromFileThatExists(t *testing.T) {
       "harvest": {
         "subdomain": "foobar",
         "username": ""
-      }
+      },
+			"pivotal_tracker": {
+        "username": ""
+			}
   }`
 
 	ioutil.WriteFile(path, []byte(fileContent), 0644)
