@@ -7,9 +7,11 @@ import (
   "fmt"
 )
 
+// HarvestConfig is a struct that saves Harvest configuration information
 type HarvestConfig struct {
   Subdomain string `json:"subdomain"`
 }
+
 // Config is a struct that contains configuration information
 type Config struct {
 	Harvest HarvestConfig `json:"harvest"`
@@ -23,8 +25,7 @@ func FromFile(path string) (cfg Config, e error) {
   _, err := os.Stat(path)
   if os.IsNotExist(err) {
     // Create the file
-    configJSON, _ := json.MarshalIndent(config, "", "  ")
-    ioutil.WriteFile(path, configJSON, 0644)
+    config.Save(path)
     return config, nil
   }
 
@@ -34,4 +35,12 @@ func FromFile(path string) (cfg Config, e error) {
   }
 
   return config, e
+}
+
+// Save persists the current state of the config struct to a fileContents
+func (config *Config) Save(path  string) (err error) {
+  configJSON, err := json.MarshalIndent(config, "", "  ")
+  ioutil.WriteFile(path, configJSON, 0644)
+  
+  return err
 }
