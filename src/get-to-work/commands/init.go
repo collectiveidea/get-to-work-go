@@ -6,6 +6,8 @@ import (
 	"get-to-work/prompts"
 	"get-to-work/service"
 
+	"strconv"
+
 	"github.com/urfave/cli"
 )
 
@@ -27,6 +29,10 @@ var Init = cli.Command{
 
 		harvest := service.NewHarvestService()
 		err := harvest.SignIn(subdomain, email, password)
+
+		prj := prompts.HarvestChooseProject(harvest.GetProjects())
+		cfg.Harvest.ProjectID = strconv.FormatInt(prj.ID, 10)
+		cfg.SaveDefaultConfig()
 
 		if err != nil {
 			println("Error: Harvest Authentication failed.")

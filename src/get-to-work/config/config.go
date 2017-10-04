@@ -17,6 +17,7 @@ type PivotalTrackerConfig struct {
 type HarvestConfig struct {
 	Subdomain string `json:"subdomain"`
 	Username  string `json:"username"`
+	ProjectID string `json:"project_id"`
 }
 
 // Config is a struct that contains configuration information

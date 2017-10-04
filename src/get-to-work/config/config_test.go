@@ -24,7 +24,8 @@ func TestFromFileNonExistant(t *testing.T) {
 	expectedJSON := `{
   "harvest": {
     "subdomain": "",
-    "username": ""
+    "username": "",
+    "project_id": ""
   },
   "pivotal_tracker": {
     "username": ""
@@ -41,7 +42,8 @@ func TestFromFileThatExists(t *testing.T) {
 	fileContent := `{
       "harvest": {
         "subdomain": "foobar",
-        "username": ""
+        "username": "",
+        "project_id": ""
       },
 			"pivotal_tracker": {
         "username": ""
