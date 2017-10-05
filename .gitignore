@@ -16,3 +16,4 @@
 bin/get-to-work-go
 bin/get-to-work
 pkg
+.apprc

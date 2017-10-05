@@ -28,7 +28,8 @@ func TestFromFileNonExistant(t *testing.T) {
     "project_id": ""
   },
   "pivotal_tracker": {
-    "username": ""
+    "username": "",
+    "project_id": ""
   }
 }`
 
@@ -46,8 +47,9 @@ func TestFromFileThatExists(t *testing.T) {
         "project_id": ""
       },
 			"pivotal_tracker": {
-        "username": ""
-			}
+		    "username": "",
+		    "project_id": ""
+		  }
   }`
 
 	ioutil.WriteFile(path, []byte(fileContent), 0644)

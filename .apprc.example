@@ -1,0 +1,5 @@
+export harvest_subdomain=my_subdomain
+export harvest_email=user@example.com
+export harvest_password=password
+export pivotal_tracker_email=user@example.com
+export pivotal_tracker_password=password

@@ -4,6 +4,8 @@ import (
 	"get-to-work/config"
 
 	"github.com/pivotal/gumshoe/trackerapi"
+	"github.com/pivotal/gumshoe/trackerapi/domain"
+	"github.com/pivotal/gumshoe/trackerapi/presenters"
 )
 
 // PivotalTrackerService defines a harvest service
@@ -36,16 +38,29 @@ func (pt PivotalTrackerService) GetUsername() (username string) {
 }
 
 // SignIn signs a user into
-func (pt *PivotalTrackerService) SignIn(email string, password string) {
+func (pt *PivotalTrackerService) SignIn(email string, password string) (err error) {
 	config := trackerapi.NewConfiguration()
-	client, err := trackerapi.NewClient(config)
+	pt.Client, err = trackerapi.NewClient(config)
 
 	if err == nil {
-		pt.Client = client
-		client.Authenticate(email, password)
+		pt.Client.Authenticate(email, password)
 
-		if !client.IsAuthenticated() {
+		if !pt.Client.IsAuthenticated() {
 			println("could not authenticate user with Pivotal Tracker")
 		}
 	}
+
+	return
+}
+
+// GetProjects returns projects
+func (pt *PivotalTrackerService) GetProjects() (projects []domain.Project) {
+	stringer := pt.Client.Projects()
+	pres, ok := stringer.(presenters.Projects)
+
+	if ok {
+		projects = pres.Projects
+	}
+
+	return
 }

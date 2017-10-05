@@ -50,6 +50,10 @@ var Init = cli.Command{
 		pt.SignIn(email, password)
 		service.SaveCredentials(pt, email, password)
 
+		ptproj := prompts.PivotalTrackerChooseProject(pt.GetProjects())
+		cfg.PivotalTracker.ProjectID = strconv.FormatInt(int64(ptproj.ID), 10)
+		cfg.SaveDefaultConfig()
+
 		return nil
 	},
 }
