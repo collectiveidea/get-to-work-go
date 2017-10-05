@@ -24,10 +24,12 @@ func TestFromFileNonExistant(t *testing.T) {
 	expectedJSON := `{
   "harvest": {
     "subdomain": "",
-    "username": ""
+    "username": "",
+    "project_id": ""
   },
   "pivotal_tracker": {
-    "username": ""
+    "username": "",
+    "project_id": ""
   }
 }`
 
@@ -41,11 +43,13 @@ func TestFromFileThatExists(t *testing.T) {
 	fileContent := `{
       "harvest": {
         "subdomain": "foobar",
-        "username": ""
+        "username": "",
+        "project_id": ""
       },
 			"pivotal_tracker": {
-        "username": ""
-			}
+		    "username": "",
+		    "project_id": ""
+		  }
   }`
 
 	ioutil.WriteFile(path, []byte(fileContent), 0644)

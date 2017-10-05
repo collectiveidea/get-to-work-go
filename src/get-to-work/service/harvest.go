@@ -9,11 +9,17 @@ type HarvestService struct {
 	Name string
 	Service
 	User *harvest.User
+	API  *harvest.API
 }
 
 // WhoAmIResponse defines the response from the /account/who_am_i endpoint
 type WhoAmIResponse struct {
 	User *harvest.User `json:"user"`
+}
+
+// ProjectsResponse is a collection of projects returned from /daily
+type ProjectsResponse struct {
+	Projects []*harvest.Project `json:"projects"`
 }
 
 // NewHarvestService creates a HarvestService instance
@@ -30,11 +36,11 @@ func (hs *HarvestService) GetName() (name string) {
 
 // SignIn signs a harvest user in
 func (hs *HarvestService) SignIn(subdomain string, email string, password string) error {
-	api := harvest.NewBasicAuthAPI(subdomain, email, password)
+	hs.API = harvest.NewBasicAuthAPI(subdomain, email, password)
 	res := WhoAmIResponse{}
 
 	// Get the user
-	err := api.Get(
+	err := hs.API.Get(
 		"/account/who_am_i",
 		harvest.Defaults(),
 		&res,
@@ -45,4 +51,13 @@ func (hs *HarvestService) SignIn(subdomain string, email string, password string
 	}
 
 	return err
+}
+
+// GetProjects returns projects
+func (hs *HarvestService) GetProjects() (projects []*harvest.Project) {
+	pr := ProjectsResponse{}
+	hs.API.Get("/daily", harvest.Defaults(), &pr)
+	projects = pr.Projects
+
+	return
 }
