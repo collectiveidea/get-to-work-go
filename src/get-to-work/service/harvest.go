@@ -1,6 +1,8 @@
 package service
 
 import (
+	"get-to-work/config"
+
 	"github.com/adlio/harvest"
 )
 
@@ -10,6 +12,13 @@ type HarvestService struct {
 	Service
 	User *harvest.User
 	API  *harvest.API
+}
+
+// GetUsername returns the configured username
+func (hs *HarvestService) GetUsername() (username string) {
+	cfg, _ := config.DefaultConfig()
+	username = cfg.Harvest.Username
+	return
 }
 
 // WhoAmIResponse defines the response from the /account/who_am_i endpoint
