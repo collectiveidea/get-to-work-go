@@ -26,3 +26,22 @@ $ get-to-work start
 ```shell
 $ get-to-work stop
 ```
+
+## Contributing
+Install development dependencies:
+```shell
+$ brew install direnv
+$ go get github.com/constabulary/gb/...
+```
+
+Setup your environment:
+```shell
+$ cp .apprc{.example,}
+# edit your .apprc example with your Harvest and Pivotal Tracker credentials
+$ direnv allow
+```
+
+Run the tests:
+```shell
+$ gb test
+```
