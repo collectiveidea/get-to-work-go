@@ -32,3 +32,23 @@ func LoadCredentials(s Service) (username string, password string, e error) {
 	// What to do if the keychain doesn't exist?
 	return
 }
+
+// HasCredentials returns true if a user's credentials have been set
+func HasCredentials(s Service) (foundCredentials bool) {
+	foundCredentials = false
+	username := s.GetUsername()
+
+	if username != "" {
+		_, password, err := LoadCredentials(s)
+
+		if err != nil {
+			return
+		}
+
+		if password != "" {
+			foundCredentials = true
+		}
+	}
+
+	return
+}
