@@ -5,8 +5,14 @@ import (
 	"time"
 )
 
-type UserResponse struct {
-	User *User `json:"user"`
+type UsersResponse struct {
+	PagedResponse
+	Users []*User `json:"users"`
+}
+
+type UserStub struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 type User struct {
@@ -32,18 +38,20 @@ type User struct {
 }
 
 func (a *API) GetUser(userID int64, args Arguments) (user *User, err error) {
-	userResponse := UserResponse{}
-	path := fmt.Sprintf("/people/%v", userID)
-	err = a.Get(path, args, &userResponse)
-	return userResponse.User, err
+	user = &User{}
+	path := fmt.Sprintf("/users/%v", userID)
+	err = a.Get(path, args, &user)
+	return user, err
 }
 
 func (a *API) GetUsers(args Arguments) (users []*User, err error) {
-	usersResponse := make([]*UserResponse, 0)
-	path := fmt.Sprintf("/people")
-	err = a.Get(path, args, &usersResponse)
-	for _, ur := range usersResponse {
-		users = append(users, ur.User)
-	}
+	users = make([]*User, 0)
+	usersResponse := UsersResponse{}
+	err = a.GetPaginated("/users", args, &usersResponse, func() {
+		for _, u := range usersResponse.Users {
+			users = append(users, u)
+		}
+		usersResponse.Users = make([]*User, 0)
+	})
 	return users, err
 }

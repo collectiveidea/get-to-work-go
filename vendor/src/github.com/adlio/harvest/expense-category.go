@@ -5,12 +5,13 @@ import (
 	"time"
 )
 
-type ExpenseCategoryResponse struct {
-	ExpenseCategory *ExpenseCategory `json:"expense_category"`
+type ExpenseCategoriesResponse struct {
+	PagedResponse
+	ExpenseCategories []*ExpenseCategory `json:"expense_categories"`
 }
 
 type ExpenseCategory struct {
-	ID          int       `json:"id"`
+	ID          int64     `json:"id"`
 	Name        string    `json:"name"`
 	UnitName    string    `json:"unit_name"`
 	UnitPrice   float64   `json:"unit_price"`
@@ -19,19 +20,21 @@ type ExpenseCategory struct {
 	Deactivated bool      `json:"deactivated"`
 }
 
-func (a *API) GetExpenseCategory(expensecategoryID int64, args Arguments) (expensecategory *ExpenseCategory, err error) {
-	expenseCategoryResponse := ExpenseCategoryResponse{}
-	path := fmt.Sprintf("/expense_categories/%v", expensecategoryID)
-	err = a.Get(path, args, &expenseCategoryResponse)
-	return expenseCategoryResponse.ExpenseCategory, err
+func (a *API) GetExpenseCategory(expenseCategoryID int64, args Arguments) (expenseCategory *ExpenseCategory, err error) {
+	expenseCategory = &ExpenseCategory{}
+	path := fmt.Sprintf("/expense_categories/%v", expenseCategoryID)
+	err = a.Get(path, args, expenseCategory)
+	return expenseCategory, err
 }
 
-func (a *API) GetExpenseCategories(args Arguments) (expensecategories []*ExpenseCategory, err error) {
-	expenseCategoriesResponse := make([]*ExpenseCategoryResponse, 0)
-	path := fmt.Sprintf("/expense_categories")
-	err = a.Get(path, args, &expenseCategoriesResponse)
-	for _, er := range expenseCategoriesResponse {
-		expensecategories = append(expensecategories, er.ExpenseCategory)
-	}
-	return expensecategories, err
+func (a *API) GetExpenseCategories(args Arguments) (expenseCategories []*ExpenseCategory, err error) {
+	expenseCategories = make([]*ExpenseCategory, 0)
+	expenseCategoriesResponse := ExpenseCategoriesResponse{}
+	err = a.GetPaginated("/expense_categories", args, &expenseCategoriesResponse, func() {
+		for _, ec := range expenseCategoriesResponse.ExpenseCategories {
+			expenseCategories = append(expenseCategories, ec)
+		}
+		expenseCategoriesResponse.ExpenseCategories = make([]*ExpenseCategory, 0)
+	})
+	return expenseCategories, err
 }

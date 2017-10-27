@@ -5,8 +5,14 @@ import (
 	"time"
 )
 
-type TaskResponse struct {
-	Task *Task `json:"task"`
+type TasksResponse struct {
+	PagedResponse
+	Tasks []*Task `json:"tasks"`
+}
+
+type TaskStub struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 type Task struct {
@@ -21,18 +27,20 @@ type Task struct {
 }
 
 func (a *API) GetTask(taskID int64, args Arguments) (task *Task, err error) {
-	taskResponse := TaskResponse{}
+	task = &Task{}
 	path := fmt.Sprintf("/tasks/%v", taskID)
-	err = a.Get(path, args, &taskResponse)
-	return taskResponse.Task, err
+	err = a.Get(path, args, task)
+	return task, err
 }
 
 func (a *API) GetTasks(args Arguments) (tasks []*Task, err error) {
-	tasksResponse := make([]*TaskResponse, 0)
-	path := fmt.Sprintf("/tasks")
-	err = a.Get(path, args, &tasksResponse)
-	for _, tr := range tasksResponse {
-		tasks = append(tasks, tr.Task)
-	}
+	tasks = make([]*Task, 0)
+	tasksResponse := TasksResponse{}
+	err = a.GetPaginated("/tasks", args, &tasksResponse, func() {
+		for _, t := range tasksResponse.Tasks {
+			tasks = append(tasks, t)
+		}
+		tasksResponse.Tasks = make([]*Task, 0)
+	})
 	return tasks, err
 }

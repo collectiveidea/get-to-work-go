@@ -5,8 +5,9 @@ import (
 	"time"
 )
 
-type InvoiceMessageResponse struct {
-	InvoiceMessage *InvoiceMessage `json:"message"`
+type InvoiceMessagesResponse struct {
+	PagedResponse
+	InvoiceMessages []*InvoiceMessage `json:"invoice_messages"`
 }
 
 type InvoiceMessage struct {
@@ -27,19 +28,22 @@ type InvoiceMessage struct {
 	FullRecipientList string    `json:"full_recipient_list"`
 }
 
-func (a *API) GetInvoiceMessages(invoiceID int64, args Arguments) (invoicemessages []*InvoiceMessage, err error) {
-	invoiceMessagesResponse := make([]*InvoiceMessageResponse, 0)
+func (a *API) GetInvoiceMessages(invoiceID int64, args Arguments) (invoiceMessages []*InvoiceMessage, err error) {
+	invoiceMessages = make([]*InvoiceMessage, 0)
+	invoiceMessagesResponse := InvoiceMessagesResponse{}
 	path := fmt.Sprintf("/invoices/%v/messages", invoiceID)
-	err = a.Get(path, args, &invoiceMessagesResponse)
-	for _, m := range invoiceMessagesResponse {
-		invoicemessages = append(invoicemessages, m.InvoiceMessage)
-	}
-	return invoicemessages, err
+	err = a.GetPaginated(path, args, &invoiceMessagesResponse, func() {
+		for _, im := range invoiceMessagesResponse.InvoiceMessages {
+			invoiceMessages = append(invoiceMessages, im)
+		}
+		invoiceMessagesResponse.InvoiceMessages = make([]*InvoiceMessage, 0)
+	})
+	return invoiceMessages, err
 }
 
-func (a *API) GetInvoiceMessage(invoiceID int64, messageID int64, args Arguments) (invoicemessage *InvoiceMessage, err error) {
-	invoiceMessageResponse := InvoiceMessageResponse{}
+func (a *API) GetInvoiceMessage(invoiceID int64, messageID int64, args Arguments) (invoiceMessage *InvoiceMessage, err error) {
+	invoiceMessage = &InvoiceMessage{}
 	path := fmt.Sprintf("/invoices/%v/messages/%v", invoiceID, messageID)
-	err = a.Get(path, args, &invoiceMessageResponse)
-	return invoiceMessageResponse.InvoiceMessage, err
+	err = a.Get(path, args, invoiceMessage)
+	return invoiceMessage, err
 }
