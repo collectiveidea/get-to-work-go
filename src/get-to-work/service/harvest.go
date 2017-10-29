@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/adlio/harvest"
 )
 
@@ -15,11 +13,12 @@ type HarvestService struct {
 }
 
 type ProjectAssignment struct {
-	ID               int64            `json:"id,omitempty"`
-	IsProjectManager bool             `json:"is_project_manager"`
-	IsActive         bool             `json:"is_active"`
-	Project          *harvest.Project `json:"project"`
-	Client           *harvest.Client  `json:client`
+	ID               int64                     `json:"id,omitempty"`
+	IsProjectManager bool                      `json:"is_project_manager"`
+	IsActive         bool                      `json:"is_active"`
+	Project          *harvest.Project          `json:"project"`
+	Client           *harvest.Client           `json:"client"`
+	TaskAsignments   []*harvest.TaskAssignment `json:"task_assignments"`
 }
 
 type UserAssignmentsResponse struct {
@@ -65,17 +64,30 @@ func (hs *HarvestService) SignIn(account_id string, token string) error {
 }
 
 // GetProjects returns projects
-func (hs *HarvestService) GetProjects() (projects []*harvest.Project) {
+func (hs *HarvestService) GetProjects() (projectAssignments []*ProjectAssignment) {
 	res := UserAssignmentsResponse{}
 	err := hs.API.Get("/users/me/project_assignments", harvest.Defaults(), &res)
 
-	for _, asg := range res.ProjectAssignments {
-		projects = append(projects, asg.Project)
-	}
-
 	if err != nil {
-		fmt.Println(err)
+		return
 	}
 
+	projectAssignments = res.ProjectAssignments
 	return
 }
+
+func (hs *HarvestService) GetTasks(projectAssignment *ProjectAssignment) (tasks []*harvest.TaskAssignment) {
+	tasks = projectAssignment.TaskAsignments
+	return
+}
+
+// func (hs *HarvestService) StartTimer(projectID int, taskID int) (err error) {
+// 	args := make(harvest.Arguments)
+//
+// 	args["project_id"] = string(projectID)
+// 	args["task_id"] = string(1234)
+// 	args["spent_date"] = time.Now().UTC().Format("2006-01-02T15:04:05-0700")
+//
+// 	fmt.Println(args["spent_date"])
+// 	return
+// }

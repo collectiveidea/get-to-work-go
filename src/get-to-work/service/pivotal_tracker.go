@@ -30,7 +30,7 @@ func (pt *PivotalTrackerService) SignIn(token string) (err error) {
 	pt.Client = pivotal.NewClient(token)
 	_, _, err = pt.Client.Me.Get()
 
-	if err == nil {
+	if err != nil {
 		println("could not authenticate user with Pivotal Tracker")
 	}
 

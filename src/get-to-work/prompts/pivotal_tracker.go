@@ -9,7 +9,10 @@ import (
 func PivotalTracker() (token string) {
 	println("Step #2: Pivotal Tracker Setup")
 	println("------------------------------")
-	token = prompt.String("token")
+	println("Sign into Pivotal Tracker and visit https://www.pivotaltracker.com/profile")
+	println("Then copy and paste your API token below.")
+	println("")
+	token = prompt.String("API token")
 	return token
 }
 

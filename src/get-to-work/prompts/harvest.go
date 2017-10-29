@@ -1,12 +1,14 @@
 package prompts
 
 import (
+	hs "get-to-work/service"
+
 	"github.com/adlio/harvest"
 	"github.com/segmentio/go-prompt"
 )
 
 // Harvest prompts a user for harvest credentials
-func Harvest() (account_id string, token string) {
+func Harvest() (accountID string, token string) {
 	println("Step #1: Harvest Setup")
 	println("----------------------")
 	println("Sign into Harvest and create a new Personal Access Token")
@@ -14,27 +16,46 @@ func Harvest() (account_id string, token string) {
 	println("")
 	println("Then copy and paste the following information:")
 
-	account_id = prompt.String("Account ID")
+	accountID = prompt.String("Account ID")
 	token = prompt.String("Your Token")
 
 	return
 }
 
-func harvestProjectNames(projects []*harvest.Project) (names []string) {
+func harvestProjectNames(projects []*hs.ProjectAssignment) (names []string) {
 	names = make([]string, len(projects))
 
 	for i, v := range projects {
-		names[i] = v.Name
+		names[i] = v.Project.Name
+	}
+
+	return
+}
+
+func harvestTaskNames(tasks []*harvest.TaskAssignment) (names []string) {
+	names = make([]string, len(tasks))
+
+	for i, v := range tasks {
+		names[i] = v.Task.Name
 	}
 
 	return
 }
 
 // HarvestChooseProject prompts the user to choose a project
-func HarvestChooseProject(projects []*harvest.Project) (proj *harvest.Project) {
+func HarvestChooseProject(projects []*hs.ProjectAssignment) (proj *hs.ProjectAssignment) {
 	projectMenu := harvestProjectNames(projects)
 	selection := prompt.Choose("Choose a project", projectMenu)
 
 	proj = projects[selection]
+	return
+}
+
+// HarvestChooseTask prompts the user to choose a task
+func HarvestChooseTask(tasks []*harvest.TaskAssignment) (task *harvest.TaskAssignment) {
+	taskMenu := harvestTaskNames(tasks)
+	selection := prompt.Choose("Choose a task", taskMenu)
+
+	task = tasks[selection]
 	return
 }
