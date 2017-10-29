@@ -5,8 +5,9 @@ import (
 	"time"
 )
 
-type ExpenseResponse struct {
-	Expense *Expense `json:"expense"`
+type ExpensesResponse struct {
+	PagedResponse
+	Expenses []*Expense `json:"expenses"`
 }
 
 type Expense struct {
@@ -31,18 +32,20 @@ type Expense struct {
 }
 
 func (a *API) GetExpense(expenseID int64, args Arguments) (expense *Expense, err error) {
-	expenseResponse := ExpenseResponse{}
+	expense = &Expense{}
 	path := fmt.Sprintf("/expenses/%v", expenseID)
-	err = a.Get(path, args, &expenseResponse)
-	return expenseResponse.Expense, err
+	err = a.Get(path, args, expense)
+	return expense, err
 }
 
 func (a *API) GetExpenses(args Arguments) (expenses []*Expense, err error) {
-	expensesResponse := make([]*ExpenseResponse, 0)
-	path := fmt.Sprintf("/expenses")
-	err = a.Get(path, args, &expensesResponse)
-	for _, er := range expensesResponse {
-		expenses = append(expenses, er.Expense)
-	}
+	expenses = make([]*Expense, 0)
+	expensesResponse := ExpensesResponse{}
+	err = a.GetPaginated("/expenses", args, &expensesResponse, func() {
+		for _, e := range expensesResponse.Expenses {
+			expenses = append(expenses, e)
+		}
+		expensesResponse.Expenses = make([]*Expense, 0)
+	})
 	return expenses, err
 }

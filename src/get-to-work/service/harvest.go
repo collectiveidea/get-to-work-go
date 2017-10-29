@@ -1,7 +1,7 @@
 package service
 
 import (
-	"get-to-work/config"
+	"fmt"
 
 	"github.com/adlio/harvest"
 )
@@ -14,11 +14,22 @@ type HarvestService struct {
 	API  *harvest.API
 }
 
-// GetUsername returns the configured username
-func (hs *HarvestService) GetUsername() (username string) {
-	cfg, _ := config.DefaultConfig()
-	username = cfg.Harvest.Username
-	return
+type ProjectAssignment struct {
+	ID               int64            `json:"id,omitempty"`
+	IsProjectManager bool             `json:"is_project_manager"`
+	IsActive         bool             `json:"is_active"`
+	Project          *harvest.Project `json:"project"`
+	Client           *harvest.Client  `json:client`
+}
+
+type UserAssignmentsResponse struct {
+	ProjectAssignments []*ProjectAssignment `json:"project_assignments"`
+	PerPage            int64                `json:"per_page"`
+	TotalPages         int64                `json:"total_pages"`
+	TotalEntries       int64                `json:"total_entries"`
+	NextPage           *int64               `json:"next_page"`
+	PreviousPage       *int64               `json:"previous_page"`
+	Page               int64                `json:"page"`
 }
 
 // WhoAmIResponse defines the response from the /account/who_am_i endpoint
@@ -44,29 +55,27 @@ func (hs *HarvestService) GetName() (name string) {
 }
 
 // SignIn signs a harvest user in
-func (hs *HarvestService) SignIn(subdomain string, email string, password string) error {
-	hs.API = harvest.NewBasicAuthAPI(subdomain, email, password)
-	res := WhoAmIResponse{}
-
+func (hs *HarvestService) SignIn(account_id string, token string) error {
+	hs.API = harvest.NewTokenAPI(account_id, token)
 	// Get the user
-	err := hs.API.Get(
-		"/account/who_am_i",
-		harvest.Defaults(),
-		&res,
-	)
-
-	if err == nil {
-		hs.User = res.User
-	}
+	user := harvest.User{}
+	err := hs.API.Get("/users/me", harvest.Defaults(), &user)
 
 	return err
 }
 
 // GetProjects returns projects
 func (hs *HarvestService) GetProjects() (projects []*harvest.Project) {
-	pr := ProjectsResponse{}
-	hs.API.Get("/daily", harvest.Defaults(), &pr)
-	projects = pr.Projects
+	res := UserAssignmentsResponse{}
+	err := hs.API.Get("/users/me/project_assignments", harvest.Defaults(), &res)
+
+	for _, asg := range res.ProjectAssignments {
+		projects = append(projects, asg.Project)
+	}
+
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	return
 }

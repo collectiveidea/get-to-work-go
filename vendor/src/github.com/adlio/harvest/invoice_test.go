@@ -34,7 +34,28 @@ func TestGetInvoices(t *testing.T) {
 	if len(invoices) != 8 {
 		t.Errorf("Incorrect number of invoices. Expected 8, got %d", len(invoices))
 	}
-	if invoices[0].ID != 7941658 {
+	if invoices[0].ID != 12286767 {
+		t.Errorf("Incorrect invoice ID '%v'. Expected 12286767", invoices[0].ID)
+	}
+	if invoices[0].Subject != "Client 1 Invoice 12286767" {
+		t.Errorf("Incorrect invoice Subject '%s'. Expected 'Client 1 Invoice 12286767'.", invoices[0].Subject)
+	}
+	if invoices[7].Subject != "This is the last invoice" {
+		t.Errorf("Incorrect invoice Subject '%s'. Expected 'This is the last invoice'.", invoices[7].Subject)
+	}
+}
+
+func TestGetSinglePageOfInvoices(t *testing.T) {
+	a := testAPI()
+	a.BaseURL = mockDynamicPathResponse().URL
+	invoices, err := a.GetInvoices(Arguments{"page": "1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(invoices) != 8 {
+		t.Errorf("Incorrect number of invoices. Expected 8, got %d", len(invoices))
+	}
+	if invoices[0].ID != 12286767 {
 		t.Errorf("Incorrect invoice ID '%v'", invoices[0].ID)
 	}
 }
