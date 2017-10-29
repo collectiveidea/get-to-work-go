@@ -20,15 +20,14 @@ func FullName(s Service) string {
 }
 
 // SaveCredentials persists credentials to the OSX keychain
-func SaveCredentials(s Service, username string, password string) (err error) {
-	err = keyring.Set(FullName(s), username, password)
+func SaveCredentials(s Service, token string) (err error) {
+	err = keyring.Set(FullName(s), "User", token)
 	return
 }
 
 // LoadCredentials returns the username and password for the harvest service
-func LoadCredentials(s Service) (username string, password string, e error) {
-	username = s.GetUsername()
-	password, _ = keyring.Get(FullName(s), username)
+func LoadCredentials(s Service) (token string, e error) {
+	token, _ = keyring.Get(FullName(s), "User")
 	// What to do if the keychain doesn't exist?
 	return
 }
@@ -39,13 +38,13 @@ func HasCredentials(s Service) (foundCredentials bool) {
 	username := s.GetUsername()
 
 	if username != "" {
-		_, password, err := LoadCredentials(s)
+		token, err := LoadCredentials(s)
 
 		if err != nil {
 			return
 		}
 
-		if password != "" {
+		if token != "" {
 			foundCredentials = true
 		}
 	}

@@ -3,16 +3,14 @@ package service
 import (
 	"get-to-work/config"
 
-	"github.com/pivotal/gumshoe/trackerapi"
-	"github.com/pivotal/gumshoe/trackerapi/domain"
-	"github.com/pivotal/gumshoe/trackerapi/presenters"
+	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
 
 // PivotalTrackerService defines a harvest service
 type PivotalTrackerService struct {
 	Service
 	Name   string
-	Client *trackerapi.Client
+	Client *pivotal.Client
 }
 
 // NewPivotalTrackerService returns a new instance of the pivotal tracker service
@@ -38,29 +36,20 @@ func (pt PivotalTrackerService) GetUsername() (username string) {
 }
 
 // SignIn signs a user into
-func (pt *PivotalTrackerService) SignIn(email string, password string) (err error) {
-	config := trackerapi.NewConfiguration()
-	pt.Client, err = trackerapi.NewClient(config)
+func (pt *PivotalTrackerService) SignIn(token string) (err error) {
+	pt.Client = pivotal.NewClient(token)
+	_, _, err = pt.Client.Me.Get()
 
 	if err == nil {
-		pt.Client.Authenticate(email, password)
-
-		if !pt.Client.IsAuthenticated() {
-			println("could not authenticate user with Pivotal Tracker")
-		}
+		println("could not authenticate user with Pivotal Tracker")
 	}
 
 	return
 }
 
 // GetProjects returns projects
-func (pt *PivotalTrackerService) GetProjects() (projects []domain.Project) {
-	stringer := pt.Client.Projects()
-	pres, ok := stringer.(presenters.Projects)
-
-	if ok {
-		projects = pres.Projects
-	}
+func (pt *PivotalTrackerService) GetProjects() (projects []*pivotal.Project, err error) {
+	projects, _, err = pt.Client.Projects.List()
 
 	return
 }

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -22,23 +21,20 @@ func TestPivotalTrackerGetName(t *testing.T) {
 }
 
 func TestPivotalTrackerSignIn(t *testing.T) {
-	email := os.Getenv("pivotal_tracker_email")
-	password := os.Getenv("pivotal_tracker_password")
+	token := os.Getenv("pivotal_tracker_token")
 	pt := NewPivotalTrackerService()
-	err := pt.SignIn(email, password)
+	err := pt.SignIn(token)
 
 	assert.Nil(t, err)
-	assert.Equal(t, true, pt.Client.IsAuthenticated())
 }
 
 func TestGetProjects(t *testing.T) {
-	email := os.Getenv("pivotal_tracker_email")
-	password := os.Getenv("pivotal_tracker_password")
+	token := os.Getenv("pivotal_tracker_token")
 	pt := NewPivotalTrackerService()
-	pt.SignIn(email, password)
+	pt.SignIn(token)
 
-	fmt.Println(pt.GetProjects())
-	projects := pt.GetProjects()
+	projects, err := pt.GetProjects()
+	assert.Nil(t, err)
 	assert.NotEmpty(t, projects)
 	assert.IsType(t, domain.Project{}, projects[0])
 }

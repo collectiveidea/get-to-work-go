@@ -6,14 +6,19 @@ import (
 )
 
 // Harvest prompts a user for harvest credentials
-func Harvest() (string, string, string) {
+func Harvest() (subdomain string, token string) {
 	println("Step #1: Harvest Setup")
 	println("----------------------")
-	subdomain := prompt.String("subdomain")
-	email := prompt.String("email")
-	password := prompt.PasswordMasked("password")
 
-	return subdomain, email, password
+	subdomain = prompt.String("subdomain")
+
+	println("Sign into Harvest and create a new Personal Access Token")
+	println("by visiting https://id.getharvest.com/oauth2/access_tokens/new")
+	println("")
+	println("Then paste it below:")
+	token = prompt.String("Personal Access Token")
+
+	return
 }
 
 func harvestProjectNames(projects []*harvest.Project) (names []string) {

@@ -98,6 +98,13 @@
 			"path": "/unix"
 		},
 		{
+			"importpath": "gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal",
+			"repository": "https://gopkg.in/salsita/go-pivotaltracker.v1",
+			"revision": "46083f60193ab53b18d2ffe64d298127652b39ac",
+			"branch": "master",
+			"path": "/v5/pivotal"
+		},
+		{
 			"importpath": "gopkg.in/urfave/cli.v1",
 			"repository": "https://gopkg.in/urfave/cli.v1",
 			"revision": "cfb38830724cc34fedffe9a2a29fb54fa9169cd1",

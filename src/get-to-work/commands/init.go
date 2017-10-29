@@ -24,25 +24,24 @@ var Init = cli.Command{
 		// Prompt for Harvest credentials
 		harvest := service.NewHarvestService()
 		var subdomain string
-		var email string
-		var password string
+		var token string
 
 		if !service.HasCredentials(harvest) {
-			subdomain, email, password = prompts.Harvest()
+			subdomain, token = prompts.Harvest()
 			cfg.Harvest.Subdomain = subdomain
-			cfg.Harvest.Username = email
 			cfg.SaveDefaultConfig()
-			service.SaveCredentials(harvest, email, password)
+			service.SaveCredentials(harvest, token)
 		} else {
 			subdomain = cfg.Harvest.Subdomain
-			email, password, err = service.LoadCredentials(harvest)
+			token, err = service.LoadCredentials(harvest)
 			if err != nil {
 				println("Could not load Harvest credentials")
 			}
 		}
 
-		err = harvest.SignIn(subdomain, email, password)
+		err = harvest.SignIn(subdomain, token)
 		if err != nil {
+			fmt.Println(err)
 			println("Error: Harvest Authentication failed.")
 		}
 
@@ -55,22 +54,21 @@ var Init = cli.Command{
 		pt := service.NewPivotalTrackerService()
 
 		if !service.HasCredentials(pt) {
-			email, password = prompts.PivotalTracker()
-			cfg.PivotalTracker.Username = email
-			cfg.SaveDefaultConfig()
+			token = prompts.PivotalTracker()
 
-			service.SaveCredentials(pt, email, password)
+			cfg.SaveDefaultConfig()
+			service.SaveCredentials(pt, token)
 		} else {
-			email, password, err = service.LoadCredentials(pt)
+			token, err = service.LoadCredentials(pt)
 			if err != nil {
 				println("Could not load PivotalTracker credentials")
 			}
 		}
 
-		pt.SignIn(email, password)
-
-		ptproj := prompts.PivotalTrackerChooseProject(pt.GetProjects())
-		cfg.PivotalTracker.ProjectID = strconv.FormatInt(int64(ptproj.ID), 10)
+		pt.SignIn(token)
+		projects, err := pt.GetProjects()
+		ptproj := prompts.PivotalTrackerChooseProject(projects)
+		cfg.PivotalTracker.ProjectID = strconv.FormatInt(int64(ptproj.Id), 10)
 		cfg.SaveDefaultConfig()
 
 		return nil

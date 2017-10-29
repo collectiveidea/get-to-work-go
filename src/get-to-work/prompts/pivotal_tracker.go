@@ -1,21 +1,19 @@
 package prompts
 
 import (
-	"github.com/pivotal/gumshoe/trackerapi/domain"
-	"github.com/segmentio/go-prompt"
+	prompt "github.com/segmentio/go-prompt"
+	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
 
 // PivotalTracker prompts the user for pivotal tracker credentials
-func PivotalTracker() (string, string) {
+func PivotalTracker() (token string) {
 	println("Step #2: Pivotal Tracker Setup")
 	println("------------------------------")
-	email := prompt.String("email")
-	password := prompt.PasswordMasked("password")
-
-	return email, password
+	token = prompt.String("token")
+	return token
 }
 
-func pivotalTrackerProjectNames(projects []domain.Project) (names []string) {
+func pivotalTrackerProjectNames(projects []*pivotal.Project) (names []string) {
 	names = make([]string, len(projects))
 
 	for i, v := range projects {
@@ -26,7 +24,7 @@ func pivotalTrackerProjectNames(projects []domain.Project) (names []string) {
 }
 
 // PivotalTrackerChooseProject prompts the user to choose a project
-func PivotalTrackerChooseProject(projects []domain.Project) (proj domain.Project) {
+func PivotalTrackerChooseProject(projects []*pivotal.Project) (proj *pivotal.Project) {
 	projectMenu := pivotalTrackerProjectNames(projects)
 	selection := prompt.Choose("Choose a project", projectMenu)
 
