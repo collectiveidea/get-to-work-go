@@ -23,23 +23,23 @@ var Init = cli.Command{
 
 		// Prompt for Harvest credentials
 		harvest := service.NewHarvestService()
-		var subdomain string
+		var account_id string
 		var token string
 
 		if !service.HasCredentials(harvest) {
-			subdomain, token = prompts.Harvest()
-			cfg.Harvest.Subdomain = subdomain
+			account_id, token = prompts.Harvest()
+			cfg.Harvest.AccountID = account_id
 			cfg.SaveDefaultConfig()
 			service.SaveCredentials(harvest, token)
 		} else {
-			subdomain = cfg.Harvest.Subdomain
+			account_id = cfg.Harvest.AccountID
 			token, err = service.LoadCredentials(harvest)
 			if err != nil {
 				println("Could not load Harvest credentials")
 			}
 		}
 
-		err = harvest.SignIn(subdomain, token)
+		err = harvest.SignIn(account_id, token)
 		if err != nil {
 			fmt.Println(err)
 			println("Error: Harvest Authentication failed.")

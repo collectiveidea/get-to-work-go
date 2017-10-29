@@ -9,7 +9,6 @@ import (
 // Service defines a service used in go-to-work
 type Service interface {
 	GetName() string
-	GetUsername() string
 }
 
 const namePrefix = "GetToWork"
@@ -21,13 +20,13 @@ func FullName(s Service) string {
 
 // SaveCredentials persists credentials to the OSX keychain
 func SaveCredentials(s Service, token string) (err error) {
-	err = keyring.Set(FullName(s), "User", token)
+	err = keyring.Set(namePrefix, s.GetName(), token)
 	return
 }
 
-// LoadCredentials returns the username and password for the harvest service
+// LoadCredentials returns the token for the harvest service
 func LoadCredentials(s Service) (token string, e error) {
-	token, _ = keyring.Get(FullName(s), "User")
+	token, _ = keyring.Get(namePrefix, s.GetName())
 	// What to do if the keychain doesn't exist?
 	return
 }
@@ -35,18 +34,10 @@ func LoadCredentials(s Service) (token string, e error) {
 // HasCredentials returns true if a user's credentials have been set
 func HasCredentials(s Service) (foundCredentials bool) {
 	foundCredentials = false
-	username := s.GetUsername()
+	token, _ := LoadCredentials(s)
 
-	if username != "" {
-		token, err := LoadCredentials(s)
-
-		if err != nil {
-			return
-		}
-
-		if token != "" {
-			foundCredentials = true
-		}
+	if len(token) > 0 {
+		foundCredentials = true
 	}
 
 	return

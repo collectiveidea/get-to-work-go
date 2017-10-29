@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/pivotal/gumshoe/trackerapi/domain"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
 
 func TestInitializePivotalTrackerService(t *testing.T) {
@@ -36,5 +36,5 @@ func TestGetProjects(t *testing.T) {
 	projects, err := pt.GetProjects()
 	assert.Nil(t, err)
 	assert.NotEmpty(t, projects)
-	assert.IsType(t, domain.Project{}, projects[0])
+	assert.IsType(t, pivotal.Project{}, *projects[0])
 }

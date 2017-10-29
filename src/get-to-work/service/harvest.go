@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"get-to-work/config"
 
 	"github.com/adlio/harvest"
 )
@@ -33,13 +32,6 @@ type UserAssignmentsResponse struct {
 	Page               int64                `json:"page"`
 }
 
-// GetUsername returns the configured username
-func (hs *HarvestService) GetUsername() (username string) {
-	cfg, _ := config.DefaultConfig()
-	username = cfg.Harvest.Username
-	return
-}
-
 // WhoAmIResponse defines the response from the /account/who_am_i endpoint
 type WhoAmIResponse struct {
 	User *harvest.User `json:"user"`
@@ -63,8 +55,8 @@ func (hs *HarvestService) GetName() (name string) {
 }
 
 // SignIn signs a harvest user in
-func (hs *HarvestService) SignIn(subdomain string, token string) error {
-	hs.API = harvest.NewTokenAPI(subdomain, token)
+func (hs *HarvestService) SignIn(account_id string, token string) error {
+	hs.API = harvest.NewTokenAPI(account_id, token)
 	// Get the user
 	user := harvest.User{}
 	err := hs.API.Get("/users/me", harvest.Defaults(), &user)

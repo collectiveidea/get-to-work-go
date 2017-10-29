@@ -9,26 +9,26 @@ import (
 )
 
 func TestSignIn(t *testing.T) {
-	subdomain := os.Getenv("harvest_subdomain")
+	accountID := os.Getenv("harvest_account_id")
 	token := os.Getenv("harvest_token")
 
-	if subdomain == "" || token == "" {
-		t.Skip("Configure `harvest_email` and `harvest_password` as environment variables to run this test")
+	if accountID == "" || token == "" {
+		t.Skip("Configure `harvest_account_id` and `harvest_token` as environment variables to run this test")
 		return
 	}
 
 	h := NewHarvestService()
-	h.SignIn(subdomain, token)
+	err := h.SignIn(accountID, token)
 
-	assert.Equal(t, h.User.Email, "chris.rittersdorf@collectiveidea.com")
+	assert.Nil(t, err)
 }
 
 func TestProjects(t *testing.T) {
-	subdomain := os.Getenv("harvest_subdomain")
+	accountID := os.Getenv("harvest_account_id")
 	token := os.Getenv("harvest_token")
 
 	h := NewHarvestService()
-	h.SignIn(subdomain, token)
+	h.SignIn(accountID, token)
 
 	projects := h.GetProjects()
 	assert.NotEmpty(t, projects)

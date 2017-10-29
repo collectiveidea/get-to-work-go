@@ -1,8 +1,6 @@
 package service
 
 import (
-	"get-to-work/config"
-
 	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
 
@@ -24,14 +22,6 @@ func NewPivotalTrackerService() (pivotalTrackerService *PivotalTrackerService) {
 // GetName returns the name value
 func (pt *PivotalTrackerService) GetName() (name string) {
 	name = pt.Name
-	return
-}
-
-// GetUsername returns the cached username for the pivotaltracker service
-func (pt PivotalTrackerService) GetUsername() (username string) {
-	cfg, _ := config.DefaultConfig()
-	username = cfg.PivotalTracker.Username
-
 	return
 }
 

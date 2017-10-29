@@ -23,12 +23,10 @@ func TestFromFileNonExistant(t *testing.T) {
 
 	expectedJSON := `{
   "harvest": {
-    "subdomain": "",
-    "username": "",
+    "account_id": "",
     "project_id": ""
   },
   "pivotal_tracker": {
-    "username": "",
     "project_id": ""
   }
 }`
@@ -42,12 +40,10 @@ func TestFromFileThatExists(t *testing.T) {
 	path := ".existing-test-config"
 	fileContent := `{
       "harvest": {
-        "subdomain": "foobar",
-        "username": "",
+        "account_id": "foobar",
         "project_id": ""
       },
 			"pivotal_tracker": {
-		    "username": "",
 		    "project_id": ""
 		  }
   }`
@@ -56,7 +52,7 @@ func TestFromFileThatExists(t *testing.T) {
 
 	config, err := FromFile(path)
 	assert.Nil(t, err, "Config raied error with existing path")
-	expected := Config{Harvest: HarvestConfig{Subdomain: "foobar"}}
+	expected := Config{Harvest: HarvestConfig{AccountID: "foobar"}}
 
 	assert.Equal(t, expected, config, "Config didn't load JSON from file")
 
