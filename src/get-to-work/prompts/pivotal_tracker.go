@@ -9,9 +9,10 @@ import (
 // PivotalTracker prompts the user for pivotal tracker credentials
 func PivotalTracker() (token string) {
 
-	println("Sign into Pivotal Tracker and visit https://www.pivotaltracker.com/profile")
-	println("Then copy and paste your API token below.")
-	println("")
+	color.Green("Sign into Pivotal Tracker and visit https://www.pivotaltracker.com/profile")
+	color.Green("Then copy and paste your API token below.")
+	color.Green("")
+
 	token = prompt.String("API token")
 	return token
 }
