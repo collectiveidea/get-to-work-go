@@ -35,10 +35,7 @@ var Init = cli.Command{
 			service.SaveCredentials(harvest, token)
 		} else {
 			accountID = cfg.Harvest.AccountID
-			fmt.Println("Account ID")
-			fmt.Println(accountID)
 			token, err = service.LoadCredentials(harvest)
-			fmt.Println(token)
 			if err != nil {
 				println("Could not load Harvest credentials")
 			}
