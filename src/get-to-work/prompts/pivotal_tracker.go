@@ -7,13 +7,18 @@ import (
 
 // PivotalTracker prompts the user for pivotal tracker credentials
 func PivotalTracker() (token string) {
-	println("Step #2: Pivotal Tracker Setup")
-	println("------------------------------")
+
 	println("Sign into Pivotal Tracker and visit https://www.pivotaltracker.com/profile")
 	println("Then copy and paste your API token below.")
 	println("")
 	token = prompt.String("API token")
 	return token
+}
+
+// PivotalTrackerBanner displays a banner for the project init
+func PivotalTrackerBanner() {
+	println("Step #2: Pivotal Tracker Setup")
+	println("------------------------------")
 }
 
 func pivotalTrackerProjectNames(projects []*pivotal.Project) (names []string) {

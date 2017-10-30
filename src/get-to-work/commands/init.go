@@ -27,6 +27,7 @@ var Init = cli.Command{
 
 		var token string
 
+		prompts.HarvestBanner()
 		if accountID == "" || !service.HasCredentials(harvest) {
 			accountID, token = prompts.Harvest()
 			cfg.Harvest.AccountID = accountID
@@ -63,6 +64,7 @@ var Init = cli.Command{
 
 		pt := service.NewPivotalTrackerService()
 
+		prompts.PivotalTrackerBanner()
 		if !service.HasCredentials(pt) {
 			token = prompts.PivotalTracker()
 
