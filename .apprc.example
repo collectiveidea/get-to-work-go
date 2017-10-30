@@ -1,5 +1,3 @@
-export harvest_subdomain=my_subdomain
-export harvest_email=user@example.com
-export harvest_password=password
-export pivotal_tracker_email=user@example.com
-export pivotal_tracker_password=password
+export harvest_account_id=1234
+export harvest_token=1234.12344444888819898283843
+export pivotal_tracker_token=123456
