@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/fatih/color"
 	"github.com/urfave/cli"
 )
 
@@ -44,7 +45,9 @@ var Start = cli.Command{
 		}
 
 		if ptStoryID == 0 {
-			fmt.Println("\n\nCould not find a previously started story.\n Please pass a Pivotal Tracker Stroy URL as an argument")
+			fmt.Println("")
+			fmt.Println("")
+			color.Red("Could not find a previously started story.\nPlease pass a Pivotal Tracker Stroy URL as an argument")
 			return
 		}
 
