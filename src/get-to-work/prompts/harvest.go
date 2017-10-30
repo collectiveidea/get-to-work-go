@@ -1,6 +1,7 @@
 package prompts
 
 import (
+	"fmt"
 	hs "get-to-work/service"
 
 	"github.com/adlio/harvest"
@@ -31,7 +32,7 @@ func harvestProjectNames(projects []*hs.ProjectAssignment) (names []string) {
 	names = make([]string, len(projects))
 
 	for i, v := range projects {
-		names[i] = v.Project.Name
+		names[i] = fmt.Sprintf("%s - %s", v.Client.Name, v.Project.Name)
 	}
 
 	return
