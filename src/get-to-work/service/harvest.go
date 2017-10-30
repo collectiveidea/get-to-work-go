@@ -1,7 +1,8 @@
 package service
 
 import (
-	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/adlio/harvest"
 )
@@ -15,11 +16,12 @@ type HarvestService struct {
 }
 
 type ProjectAssignment struct {
-	ID               int64            `json:"id,omitempty"`
-	IsProjectManager bool             `json:"is_project_manager"`
-	IsActive         bool             `json:"is_active"`
-	Project          *harvest.Project `json:"project"`
-	Client           *harvest.Client  `json:client`
+	ID               int64                     `json:"id,omitempty"`
+	IsProjectManager bool                      `json:"is_project_manager"`
+	IsActive         bool                      `json:"is_active"`
+	Project          *harvest.Project          `json:"project"`
+	Client           *harvest.Client           `json:"client"`
+	TaskAsignments   []*harvest.TaskAssignment `json:"task_assignments"`
 }
 
 type UserAssignmentsResponse struct {
@@ -30,6 +32,15 @@ type UserAssignmentsResponse struct {
 	NextPage           *int64               `json:"next_page"`
 	PreviousPage       *int64               `json:"previous_page"`
 	Page               int64                `json:"page"`
+}
+
+type TimeEntry struct {
+	ID             int    `json:"id"`
+	ProjectID      int    `json:"project_id"`
+	TaskID         int    `json:"task_id"`
+	SpentDate      string `json:"spent_date"`
+	Notes          string `json:"notes"`
+	TimerStartedAt string `json:"timer_started_at,omitempty"`
 }
 
 // WhoAmIResponse defines the response from the /account/who_am_i endpoint
@@ -65,17 +76,38 @@ func (hs *HarvestService) SignIn(account_id string, token string) error {
 }
 
 // GetProjects returns projects
-func (hs *HarvestService) GetProjects() (projects []*harvest.Project) {
+func (hs *HarvestService) GetProjects() (projectAssignments []*ProjectAssignment) {
 	res := UserAssignmentsResponse{}
 	err := hs.API.Get("/users/me/project_assignments", harvest.Defaults(), &res)
 
-	for _, asg := range res.ProjectAssignments {
-		projects = append(projects, asg.Project)
+	if err != nil {
+		return
 	}
+
+	projectAssignments = res.ProjectAssignments
+	return
+}
+
+func (hs *HarvestService) GetTasks(projectAssignment *ProjectAssignment) (tasks []*harvest.TaskAssignment) {
+	tasks = projectAssignment.TaskAsignments
+	return
+}
+
+func (hs *HarvestService) StartTimer(projectID string, taskID string, notes string) (timerID int, err error) {
+	args := harvest.Defaults()
+
+	timeEntry := TimeEntry{}
+	timeEntry.ProjectID, _ = strconv.Atoi(projectID)
+	timeEntry.TaskID, _ = strconv.Atoi(taskID)
+	timeEntry.SpentDate = time.Now().UTC().Format("2006-01-02")
+	timeEntry.Notes = notes
+
+	err = hs.API.PostWithoutRedirect("/time_entries", args, timeEntry, &timeEntry)
 
 	if err != nil {
-		fmt.Println(err)
+		return
 	}
 
+	timerID = timeEntry.ID
 	return
 }

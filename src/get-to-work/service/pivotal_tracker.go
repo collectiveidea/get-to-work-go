@@ -30,7 +30,7 @@ func (pt *PivotalTrackerService) SignIn(token string) (err error) {
 	pt.Client = pivotal.NewClient(token)
 	_, _, err = pt.Client.Me.Get()
 
-	if err == nil {
+	if err != nil {
 		println("could not authenticate user with Pivotal Tracker")
 	}
 
@@ -41,5 +41,15 @@ func (pt *PivotalTrackerService) SignIn(token string) (err error) {
 func (pt *PivotalTrackerService) GetProjects() (projects []*pivotal.Project, err error) {
 	projects, _, err = pt.Client.Projects.List()
 
+	return
+}
+
+// GetStory returns Story
+func (pt *PivotalTrackerService) GetStory(projectID int, storyID int) (story *pivotal.Story) {
+	story, _, err := pt.Client.Stories.Get(projectID, storyID)
+
+	if err != nil {
+		return
+	}
 	return
 }

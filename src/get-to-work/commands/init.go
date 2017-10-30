@@ -23,30 +23,40 @@ var Init = cli.Command{
 
 		// Prompt for Harvest credentials
 		harvest := service.NewHarvestService()
-		var account_id string
+		accountID := cfg.Harvest.AccountID
+
 		var token string
 
-		if !service.HasCredentials(harvest) {
-			account_id, token = prompts.Harvest()
-			cfg.Harvest.AccountID = account_id
+		if accountID == "" || !service.HasCredentials(harvest) {
+			accountID, token = prompts.Harvest()
+			cfg.Harvest.AccountID = accountID
 			cfg.SaveDefaultConfig()
 			service.SaveCredentials(harvest, token)
 		} else {
-			account_id = cfg.Harvest.AccountID
+			accountID = cfg.Harvest.AccountID
+			fmt.Println("Account ID")
+			fmt.Println(accountID)
 			token, err = service.LoadCredentials(harvest)
+			fmt.Println(token)
 			if err != nil {
 				println("Could not load Harvest credentials")
 			}
 		}
 
-		err = harvest.SignIn(account_id, token)
+		err = harvest.SignIn(accountID, token)
 		if err != nil {
 			fmt.Println(err)
 			println("Error: Harvest Authentication failed.")
 		}
 
-		prj := prompts.HarvestChooseProject(harvest.GetProjects())
-		cfg.Harvest.ProjectID = strconv.FormatInt(prj.ID, 10)
+		projAssignment := prompts.HarvestChooseProject(harvest.GetProjects())
+		cfg.Harvest.ProjectID = strconv.FormatInt(projAssignment.Project.ID, 10)
+		cfg.SaveDefaultConfig()
+
+		taskAssignments := harvest.GetTasks(projAssignment)
+		taskAssignment := prompts.HarvestChooseTask(taskAssignments)
+
+		cfg.Harvest.TaskID = strconv.FormatInt(taskAssignment.Task.ID, 10)
 		cfg.SaveDefaultConfig()
 
 		fmt.Print("\n\n")
@@ -66,7 +76,7 @@ var Init = cli.Command{
 		}
 
 		pt.SignIn(token)
-		projects, err := pt.GetProjects()
+		projects, _ := pt.GetProjects()
 		ptproj := prompts.PivotalTrackerChooseProject(projects)
 		cfg.PivotalTracker.ProjectID = strconv.FormatInt(int64(ptproj.Id), 10)
 		cfg.SaveDefaultConfig()

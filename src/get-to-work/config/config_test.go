@@ -24,7 +24,8 @@ func TestFromFileNonExistant(t *testing.T) {
 	expectedJSON := `{
   "harvest": {
     "account_id": "",
-    "project_id": ""
+    "project_id": "",
+    "task_id": ""
   },
   "pivotal_tracker": {
     "project_id": ""
@@ -41,7 +42,8 @@ func TestFromFileThatExists(t *testing.T) {
 	fileContent := `{
       "harvest": {
         "account_id": "foobar",
-        "project_id": ""
+        "project_id": "",
+        "task_id": ""
       },
 			"pivotal_tracker": {
 		    "project_id": ""
