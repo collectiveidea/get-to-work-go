@@ -1,6 +1,7 @@
 package prompts
 
 import (
+	"github.com/fatih/color"
 	prompt "github.com/segmentio/go-prompt"
 	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
@@ -17,8 +18,8 @@ func PivotalTracker() (token string) {
 
 // PivotalTrackerBanner displays a banner for the project init
 func PivotalTrackerBanner() {
-	println("Step #2: Pivotal Tracker Setup")
-	println("------------------------------")
+	color.Cyan("Step #2: Pivotal Tracker Setup")
+	color.Cyan("------------------------------")
 }
 
 func pivotalTrackerProjectNames(projects []*pivotal.Project) (names []string) {

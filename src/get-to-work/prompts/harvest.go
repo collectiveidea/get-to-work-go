@@ -4,13 +4,14 @@ import (
 	hs "get-to-work/service"
 
 	"github.com/adlio/harvest"
+	"github.com/fatih/color"
 	"github.com/segmentio/go-prompt"
 )
 
 // HarvestBanner shows the banner for the harvest init Step
 func HarvestBanner() {
-	println("Step #1: Harvest Setup")
-	println("----------------------")
+	color.Cyan("Step #1: Harvest Setup")
+	color.Cyan("----------------------")
 }
 
 // Harvest prompts a user for harvest credentials
