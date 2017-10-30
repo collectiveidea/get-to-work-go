@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -109,5 +110,14 @@ func (hs *HarvestService) StartTimer(projectID string, taskID string, notes stri
 	}
 
 	timerID = timeEntry.ID
+	return
+}
+
+func (hs *HarvestService) Stoptimer(timerEntryID int) (err error) {
+	timeEntry := TimeEntry{}
+	args := harvest.Defaults()
+	url := fmt.Sprintf("/time_entries/%d/stop", timerEntryID)
+	err = hs.API.PatchWithoutRedirect(url, args, timeEntry, &timeEntry)
+
 	return
 }

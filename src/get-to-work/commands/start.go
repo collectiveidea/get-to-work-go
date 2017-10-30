@@ -38,7 +38,6 @@ var Start = cli.Command{
 		// Get pivotal tracker story id
 		firstArg := c.Args().Get(0)
 		if firstArg == "" {
-			println("getting story id from config")
 			ptStoryID = cfg.PivotalTracker.LastStoryID
 		} else {
 			ptStoryID = GetPTStoryID(firstArg)
@@ -48,9 +47,6 @@ var Start = cli.Command{
 			fmt.Println("\n\nCould not find a previously started story.\n Please pass a Pivotal Tracker Stroy URL as an argument")
 			return
 		}
-
-		println("the story id")
-		println(ptStoryID)
 
 		// The user passed in the argument
 		projID, _ := strconv.Atoi(cfg.PivotalTracker.ProjectID)
@@ -62,6 +58,7 @@ var Start = cli.Command{
 			fmt.Println(err)
 			return
 		}
+
 		cfg.PivotalTracker.LastStoryID = ptStoryID
 		cfg.SaveDefaultConfig()
 
