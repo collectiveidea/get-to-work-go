@@ -7,10 +7,14 @@ import (
 	"github.com/segmentio/go-prompt"
 )
 
-// Harvest prompts a user for harvest credentials
-func Harvest() (accountID string, token string) {
+// HarvestBanner shows the banner for the harvest init Step
+func HarvestBanner() {
 	println("Step #1: Harvest Setup")
 	println("----------------------")
+}
+
+// Harvest prompts a user for harvest credentials
+func Harvest() (accountID string, token string) {
 	println("Sign into Harvest and create a new Personal Access Token")
 	println("by visiting https://id.getharvest.com/oauth2/access_tokens/new")
 	println("")
