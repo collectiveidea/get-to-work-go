@@ -19,7 +19,7 @@ var Init = cli.Command{
 		// Create a configuration file
 		cfg, _ := config.DefaultConfig()
 
-		fmt.Print("\n\n")
+		fmt.Print("\n")
 
 		// Prompt for Harvest credentials
 		harvest := service.NewHarvestService()

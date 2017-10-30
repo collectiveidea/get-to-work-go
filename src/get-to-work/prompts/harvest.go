@@ -4,21 +4,22 @@ import (
 	hs "get-to-work/service"
 
 	"github.com/adlio/harvest"
+	"github.com/fatih/color"
 	"github.com/segmentio/go-prompt"
 )
 
 // HarvestBanner shows the banner for the harvest init Step
 func HarvestBanner() {
-	println("Step #1: Harvest Setup")
-	println("----------------------")
+	color.Cyan("Step #1: Harvest Setup")
+	color.Cyan("----------------------")
 }
 
 // Harvest prompts a user for harvest credentials
 func Harvest() (accountID string, token string) {
-	println("Sign into Harvest and create a new Personal Access Token")
-	println("by visiting https://id.getharvest.com/oauth2/access_tokens/new")
-	println("")
-	println("Then copy and paste the following information:")
+	color.Green("Sign into Harvest and create a new Personal Access Token")
+	color.Green("by visiting https://id.getharvest.com/oauth2/access_tokens/new")
+	color.Green("")
+	color.Green("Then copy and paste the following information:")
 
 	accountID = prompt.String("Account ID")
 	token = prompt.String("Your Token")

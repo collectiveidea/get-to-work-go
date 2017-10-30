@@ -1,6 +1,7 @@
 package prompts
 
 import (
+	"github.com/fatih/color"
 	prompt "github.com/segmentio/go-prompt"
 	"gopkg.in/salsita/go-pivotaltracker.v1/v5/pivotal"
 )
@@ -8,17 +9,18 @@ import (
 // PivotalTracker prompts the user for pivotal tracker credentials
 func PivotalTracker() (token string) {
 
-	println("Sign into Pivotal Tracker and visit https://www.pivotaltracker.com/profile")
-	println("Then copy and paste your API token below.")
-	println("")
+	color.Green("Sign into Pivotal Tracker and visit https://www.pivotaltracker.com/profile")
+	color.Green("Then copy and paste your API token below.")
+	color.Green("")
+
 	token = prompt.String("API token")
 	return token
 }
 
 // PivotalTrackerBanner displays a banner for the project init
 func PivotalTrackerBanner() {
-	println("Step #2: Pivotal Tracker Setup")
-	println("------------------------------")
+	color.Cyan("Step #2: Pivotal Tracker Setup")
+	color.Cyan("------------------------------")
 }
 
 func pivotalTrackerProjectNames(projects []*pivotal.Project) (names []string) {
