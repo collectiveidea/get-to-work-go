@@ -210,6 +210,43 @@ func (a *API) PostWithoutRedirect(path string, args Arguments, postData interfac
 	return nil
 }
 
+func (a *API) PatchWithoutRedirect(path string, args Arguments, postData interface{}, target interface{}) error {
+	url := fmt.Sprintf("%s%s", a.BaseURL, path)
+	urlWithParams := fmt.Sprintf("%s?%s", url, args.ToURLValues().Encode())
+
+	buffer := new(bytes.Buffer)
+	if postData != nil {
+		json.NewEncoder(buffer).Encode(postData)
+	}
+
+	req, err := http.NewRequest("PATCH", urlWithParams, buffer)
+	if err != nil {
+		return errors.Wrapf(err, "Invalid PATCH request %s", url)
+	}
+	a.AddHeaders(req)
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+
+	resp, err := a.client.Do(req)
+	if err != nil {
+		return errors.Wrapf(err, "HTTP request failure on %s", url)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 && resp.StatusCode != 201 {
+		var body []byte
+		body, err = ioutil.ReadAll(resp.Body)
+		return errors.Errorf("HTTP request failure on %s: %s %s", url, string(body), err)
+	}
+
+	decoder := json.NewDecoder(resp.Body)
+	err = decoder.Decode(target)
+	if err != nil {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return errors.Wrapf(err, "JSON decode failed on %s: %s", url, string(body))
+	}
+
+	return nil
+}
+
 func (a *API) Delete(path string, args Arguments) error {
 	url := fmt.Sprintf("%s%s", a.BaseURL, path)
 	urlWithParams := fmt.Sprintf("%s?%s", url, args.ToURLValues().Encode())

@@ -10,7 +10,8 @@ const defaultConfigPath = ".get-to-work"
 
 // PivotalTrackerConfig is a struct that saves PT confituration information
 type PivotalTrackerConfig struct {
-	ProjectID string `json:"project_id"`
+	ProjectID   string `json:"project_id"`
+	LastStoryID int    `json:"last_story_id,omitempty"`
 }
 
 // HarvestConfig is a struct that saves Harvest configuration information
