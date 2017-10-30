@@ -15,9 +15,10 @@ type PivotalTrackerConfig struct {
 
 // HarvestConfig is a struct that saves Harvest configuration information
 type HarvestConfig struct {
-	AccountID string `json:"account_id"`
-	ProjectID string `json:"project_id"`
-	TaskID    string `json:"task_id"`
+	AccountID      string `json:"account_id"`
+	ProjectID      string `json:"project_id"`
+	TaskID         string `json:"task_id"`
+	LatTimeEntryID int    `json:"last_time_entry_id,omitempty"`
 }
 
 // Config is a struct that contains configuration information

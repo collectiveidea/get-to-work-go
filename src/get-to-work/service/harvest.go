@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -94,7 +93,7 @@ func (hs *HarvestService) GetTasks(projectAssignment *ProjectAssignment) (tasks 
 	return
 }
 
-func (hs *HarvestService) StartTimer(projectID string, taskID string, notes string) (err error) {
+func (hs *HarvestService) StartTimer(projectID string, taskID string, notes string) (timerID int, err error) {
 	args := harvest.Defaults()
 
 	timeEntry := TimeEntry{}
@@ -103,11 +102,12 @@ func (hs *HarvestService) StartTimer(projectID string, taskID string, notes stri
 	timeEntry.SpentDate = time.Now().UTC().Format("2006-01-02")
 	timeEntry.Notes = notes
 
-	hs.API.Post("/time_entries", args, timeEntry, &timeEntry)
+	err = hs.API.PostWithoutRedirect("/time_entries", args, timeEntry, &timeEntry)
 
 	if err != nil {
-		fmt.Println(err)
+		return
 	}
 
+	timerID = timeEntry.ID
 	return
 }

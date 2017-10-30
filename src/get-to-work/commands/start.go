@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"get-to-work/config"
 	"get-to-work/service"
 	"regexp"
@@ -39,7 +40,13 @@ var Start = cli.Command{
 		story := pt.GetStory(projID, ptStoryID)
 
 		// Create a harvest time entry w/ the new content
-		harvest.StartTimer(cfg.Harvest.ProjectID, cfg.Harvest.TaskID, story.Name+"\n\n"+story.URL)
+		cfg.Harvest.LatTimeEntryID, err = harvest.StartTimer(cfg.Harvest.ProjectID, cfg.Harvest.TaskID, story.Name+"\n\n"+story.URL)
+		if err != nil {
+			fmt.Println(err)
+		}
+		cfg.SaveDefaultConfig()
+
+		println("The timer id...")
 
 		return nil
 	},
