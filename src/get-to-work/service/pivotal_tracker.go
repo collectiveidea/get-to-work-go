@@ -43,3 +43,13 @@ func (pt *PivotalTrackerService) GetProjects() (projects []*pivotal.Project, err
 
 	return
 }
+
+// GetStory returns Story
+func (pt *PivotalTrackerService) GetStory(projectID int, storyID int) (story *pivotal.Story) {
+	story, _, err := pt.Client.Stories.Get(projectID, storyID)
+
+	if err != nil {
+		return
+	}
+	return
+}

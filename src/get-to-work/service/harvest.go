@@ -1,6 +1,10 @@
 package service
 
 import (
+	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/adlio/harvest"
 )
 
@@ -29,6 +33,15 @@ type UserAssignmentsResponse struct {
 	NextPage           *int64               `json:"next_page"`
 	PreviousPage       *int64               `json:"previous_page"`
 	Page               int64                `json:"page"`
+}
+
+type TimeEntry struct {
+	ID             int    `json:"id"`
+	ProjectID      int    `json:"project_id"`
+	TaskID         int    `json:"task_id"`
+	SpentDate      string `json:"spent_date"`
+	Notes          string `json:"notes"`
+	TimerStartedAt string `json:"timer_started_at,omitempty"`
 }
 
 // WhoAmIResponse defines the response from the /account/who_am_i endpoint
@@ -81,13 +94,20 @@ func (hs *HarvestService) GetTasks(projectAssignment *ProjectAssignment) (tasks 
 	return
 }
 
-// func (hs *HarvestService) StartTimer(projectID int, taskID int) (err error) {
-// 	args := make(harvest.Arguments)
-//
-// 	args["project_id"] = string(projectID)
-// 	args["task_id"] = string(1234)
-// 	args["spent_date"] = time.Now().UTC().Format("2006-01-02T15:04:05-0700")
-//
-// 	fmt.Println(args["spent_date"])
-// 	return
-// }
+func (hs *HarvestService) StartTimer(projectID string, taskID string, notes string) (err error) {
+	args := harvest.Defaults()
+
+	timeEntry := TimeEntry{}
+	timeEntry.ProjectID, _ = strconv.Atoi(projectID)
+	timeEntry.TaskID, _ = strconv.Atoi(taskID)
+	timeEntry.SpentDate = time.Now().UTC().Format("2006-01-02")
+	timeEntry.Notes = notes
+
+	hs.API.Post("/time_entries", args, timeEntry, &timeEntry)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return
+}

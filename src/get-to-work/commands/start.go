@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"get-to-work/config"
 	"get-to-work/service"
 	"regexp"
@@ -36,7 +35,11 @@ var Start = cli.Command{
 
 		// Get pivotal tracker story id
 		ptStoryID := GetPTStoryID(c.Args().Get(0))
-		fmt.Println(ptStoryID)
+		projID, _ := strconv.Atoi(cfg.PivotalTracker.ProjectID)
+		story := pt.GetStory(projID, ptStoryID)
+
+		// Create a harvest time entry w/ the new content
+		harvest.StartTimer(cfg.Harvest.ProjectID, cfg.Harvest.TaskID, story.Name+"\n\n"+story.URL)
 
 		return nil
 	},
