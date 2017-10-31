@@ -31,9 +31,15 @@ func TestPivotalTrackerSignIn(t *testing.T) {
 func TestGetProjects(t *testing.T) {
 	token := os.Getenv("pivotal_tracker_token")
 	pt := NewPivotalTrackerService()
-	pt.SignIn(token)
+	err := pt.SignIn(token)
+	if err != nil {
+		t.Error(err)
+	}
 
 	projects, err := pt.GetProjects()
+	if err != nil {
+		t.Error(err)
+	}
 	assert.Nil(t, err)
 	assert.NotEmpty(t, projects)
 	assert.IsType(t, pivotal.Project{}, *projects[0])

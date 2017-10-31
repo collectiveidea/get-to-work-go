@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -29,30 +30,43 @@ type Config struct {
 }
 
 // FromFile returns a Config given a file path.
-func FromFile(path string) (cfg Config, e error) {
-	config := Config{}
+func FromFile(path string) (cfg Config, err error) {
+	cfg = Config{}
 
-	_, err := os.Stat(path)
+	_, err = os.Stat(path)
 	if os.IsNotExist(err) {
 		// Create the file
-		config.Save(path)
-		return config, nil
+		suberr := cfg.Save(path)
+		if suberr != nil {
+			return
+		}
 	}
 
-	fileContents, e := ioutil.ReadFile(path)
-	if e == nil {
-		json.Unmarshal(fileContents, &config)
+	fileContents, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	return config, e
+	err = json.Unmarshal(fileContents, &cfg)
+	return
 }
 
 // Save persists the current state of the config struct to a fileContents
 func (config *Config) Save(path string) (err error) {
 	configJSON, err := json.MarshalIndent(config, "", "  ")
-	ioutil.WriteFile(path, configJSON, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
-	return err
+	err = ioutil.WriteFile(path, configJSON, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	return
 }
 
 // DefaultConfig returns the defualt config from ".get-to-work"
@@ -61,6 +75,7 @@ func DefaultConfig() (config Config, e error) {
 	return cfg, err
 }
 
+// SaveDefaultConfig saves the default config file
 func (config *Config) SaveDefaultConfig() (err error) {
 	err = config.Save(defaultConfigPath)
 	return

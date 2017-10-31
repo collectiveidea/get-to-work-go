@@ -18,6 +18,9 @@ func TestSignIn(t *testing.T) {
 
 	h := NewHarvestService()
 	err := h.SignIn(accountID, token)
+	if err != nil {
+		t.Error(err)
+	}
 
 	assert.Nil(t, err)
 }
@@ -27,7 +30,11 @@ func TestProjects(t *testing.T) {
 	token := os.Getenv("harvest_token")
 
 	h := NewHarvestService()
-	h.SignIn(accountID, token)
+	err := h.SignIn(accountID, token)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	projects := h.GetProjects()
 	assert.NotEmpty(t, projects)

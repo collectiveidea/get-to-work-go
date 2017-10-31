@@ -16,6 +16,7 @@ type HarvestService struct {
 	API  *harvest.API
 }
 
+// ProjectAssignment defines a project assignment from the Harvest API
 type ProjectAssignment struct {
 	ID               int64                     `json:"id,omitempty"`
 	IsProjectManager bool                      `json:"is_project_manager"`
@@ -25,6 +26,7 @@ type ProjectAssignment struct {
 	TaskAsignments   []*harvest.TaskAssignment `json:"task_assignments"`
 }
 
+// UserAssignmentsResponse defines a user assignment response from the Harvest API
 type UserAssignmentsResponse struct {
 	ProjectAssignments []*ProjectAssignment `json:"project_assignments"`
 	PerPage            int64                `json:"per_page"`
@@ -35,6 +37,7 @@ type UserAssignmentsResponse struct {
 	Page               int64                `json:"page"`
 }
 
+// TimeEntry defines a time entry from the Harvest API
 type TimeEntry struct {
 	ID             int    `json:"id"`
 	ProjectID      int    `json:"project_id"`
@@ -67,8 +70,8 @@ func (hs *HarvestService) GetName() (name string) {
 }
 
 // SignIn signs a harvest user in
-func (hs *HarvestService) SignIn(account_id string, token string) error {
-	hs.API = harvest.NewTokenAPI(account_id, token)
+func (hs *HarvestService) SignIn(accountID string, token string) error {
+	hs.API = harvest.NewTokenAPI(accountID, token)
 	// Get the user
 	user := harvest.User{}
 	err := hs.API.Get("/users/me", harvest.Defaults(), &user)
@@ -89,11 +92,13 @@ func (hs *HarvestService) GetProjects() (projectAssignments []*ProjectAssignment
 	return
 }
 
+// GetTasks returns TaskAssignments given a ProjectAssignment
 func (hs *HarvestService) GetTasks(projectAssignment *ProjectAssignment) (tasks []*harvest.TaskAssignment) {
 	tasks = projectAssignment.TaskAsignments
 	return
 }
 
+// StartTimer starts a harvest timer
 func (hs *HarvestService) StartTimer(projectID string, taskID string, notes string) (timerID int, err error) {
 	args := harvest.Defaults()
 
@@ -113,6 +118,7 @@ func (hs *HarvestService) StartTimer(projectID string, taskID string, notes stri
 	return
 }
 
+// Stoptimer stops a Harvest timer
 func (hs *HarvestService) Stoptimer(timerEntryID int) (err error) {
 	timeEntry := TimeEntry{}
 	args := harvest.Defaults()

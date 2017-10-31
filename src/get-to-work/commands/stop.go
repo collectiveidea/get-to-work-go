@@ -5,10 +5,11 @@ import (
 	"get-to-work/config"
 	"get-to-work/service"
 
+	"github.com/fatih/color"
 	"github.com/urfave/cli"
 )
 
-// Init prepares the project directory for use
+// Stop stops a running timer
 var Stop = cli.Command{
 	Name:  "stop",
 	Usage: "Stop your last running timer",
@@ -16,20 +17,24 @@ var Stop = cli.Command{
 		cfg, _ := config.DefaultConfig()
 		harvest := service.NewHarvestService()
 		token, _ := service.LoadCredentials(harvest)
-		err = harvest.SignIn(cfg.Harvest.AccountID, token)
 
+		err = harvest.SignIn(cfg.Harvest.AccountID, token)
 		if err != nil {
+			color.Red("Could not sign in to Harvest.")
 			return
 		}
 
 		entryID := cfg.Harvest.LatTimeEntryID
-
 		if entryID == 0 {
 			fmt.Println("\n\nNo existing time entry found. No timer has been stopped.")
 			return
 		}
 
-		harvest.Stoptimer(entryID)
+		err = harvest.Stoptimer(entryID)
+		if err != nil {
+			color.Red("Could not stop timer %s", entryID)
+		}
+
 		return
 	},
 }
