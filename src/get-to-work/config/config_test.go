@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -11,9 +12,8 @@ import (
 func TestFromFileNonExistant(t *testing.T) {
 	path := ".non-existant-test"
 	_, err := FromFile(path)
-
 	if err != nil {
-		t.Error("FromFile should not raise an error")
+		t.Error("From File should not raise an error")
 	}
 
 	fileContent, fileReadErr := ioutil.ReadFile(path)
@@ -33,7 +33,11 @@ func TestFromFileNonExistant(t *testing.T) {
 }`
 
 	assert.Equal(t, expectedJSON, string(fileContent), "Incorrect default content")
-	os.Remove(path)
+	err = os.Remove(path)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
 
 func TestFromFileThatExists(t *testing.T) {
@@ -50,7 +54,11 @@ func TestFromFileThatExists(t *testing.T) {
 		  }
   }`
 
-	ioutil.WriteFile(path, []byte(fileContent), 0644)
+	err := ioutil.WriteFile(path, []byte(fileContent), 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	config, err := FromFile(path)
 	assert.Nil(t, err, "Config raied error with existing path")
@@ -58,5 +66,9 @@ func TestFromFileThatExists(t *testing.T) {
 
 	assert.Equal(t, expected, config, "Config didn't load JSON from file")
 
-	os.Remove(path)
+	err = os.Remove(path)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }

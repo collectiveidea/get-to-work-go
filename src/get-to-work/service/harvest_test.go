@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/adlio/harvest"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,6 +18,9 @@ func TestSignIn(t *testing.T) {
 
 	h := NewHarvestService()
 	err := h.SignIn(accountID, token)
+	if err != nil {
+		t.Error(err)
+	}
 
 	assert.Nil(t, err)
 }
@@ -28,9 +30,13 @@ func TestProjects(t *testing.T) {
 	token := os.Getenv("harvest_token")
 
 	h := NewHarvestService()
-	h.SignIn(accountID, token)
+	err := h.SignIn(accountID, token)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	projects := h.GetProjects()
 	assert.NotEmpty(t, projects)
-	assert.IsType(t, &harvest.Project{}, projects[0])
+	assert.IsType(t, &ProjectAssignment{}, projects[0])
 }

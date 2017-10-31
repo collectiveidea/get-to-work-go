@@ -11,6 +11,7 @@ import (
 	"github.com/urfave/cli"
 )
 
+// GetPTStoryID returns a Pivotal Tracker story ID given a Pivotal Tracker story URL
 func GetPTStoryID(URL string) int {
 	r, _ := regexp.Compile("[0-9]+$")
 	storyID, _ := strconv.Atoi(r.FindString(URL))
@@ -18,7 +19,7 @@ func GetPTStoryID(URL string) int {
 	return storyID
 }
 
-// Init prepares the project directory for use
+// Start prepares the project directory for use
 var Start = cli.Command{
 	Name:  "start",
 	Usage: "Start a timer",
@@ -31,10 +32,21 @@ var Start = cli.Command{
 		harvest := service.NewHarvestService()
 		token, _ = service.LoadCredentials(harvest)
 		err = harvest.SignIn(cfg.Harvest.AccountID, token)
+		if err != nil {
+			color.Red("ERROR: Could not sign into Harvest service")
+			fmt.Println(err)
+			return
+		}
 
 		pt := service.NewPivotalTrackerService()
 		token, _ = service.LoadCredentials(pt)
-		pt.SignIn(token)
+
+		err = pt.SignIn(token)
+		if err != nil {
+			color.Red("ERROR: Could not sign into Pivotal Tracker service")
+			fmt.Println(err)
+			return
+		}
 
 		// Get pivotal tracker story id
 		firstArg := c.Args().Get(0)
@@ -63,7 +75,11 @@ var Start = cli.Command{
 		}
 
 		cfg.PivotalTracker.LastStoryID = ptStoryID
-		cfg.SaveDefaultConfig()
+		err = cfg.SaveDefaultConfig()
+		if err != nil {
+			color.Red("Could not save .get-to-work")
+			return
+		}
 
 		return nil
 

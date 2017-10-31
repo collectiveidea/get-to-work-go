@@ -8,6 +8,7 @@ import (
 
 	"strconv"
 
+	"github.com/fatih/color"
 	"github.com/urfave/cli"
 )
 
@@ -31,8 +32,18 @@ var Init = cli.Command{
 		if accountID == "" || !service.HasCredentials(harvest) {
 			accountID, token = prompts.Harvest()
 			cfg.Harvest.AccountID = accountID
-			cfg.SaveDefaultConfig()
-			service.SaveCredentials(harvest, token)
+
+			err = cfg.SaveDefaultConfig()
+			if err != nil {
+				color.Red("Could not save .get-to-work")
+				return
+			}
+
+			err = service.SaveCredentials(harvest, token)
+			if err != nil {
+				color.Red("Could not Save Harvest credentials to your keychain.")
+			}
+
 		} else {
 			accountID = cfg.Harvest.AccountID
 			token, err = service.LoadCredentials(harvest)
@@ -45,17 +56,28 @@ var Init = cli.Command{
 		if err != nil {
 			fmt.Println(err)
 			println("Error: Harvest Authentication failed.")
+			return
 		}
 
 		projAssignment := prompts.HarvestChooseProject(harvest.GetProjects())
 		cfg.Harvest.ProjectID = strconv.FormatInt(projAssignment.Project.ID, 10)
-		cfg.SaveDefaultConfig()
+		err = cfg.SaveDefaultConfig()
+
+		if err != nil {
+			color.Red("Could not save .get-to-work")
+			return
+		}
 
 		taskAssignments := harvest.GetTasks(projAssignment)
 		taskAssignment := prompts.HarvestChooseTask(taskAssignments)
 
 		cfg.Harvest.TaskID = strconv.FormatInt(taskAssignment.Task.ID, 10)
-		cfg.SaveDefaultConfig()
+
+		err = cfg.SaveDefaultConfig()
+		if err != nil {
+			color.Red("Could not save .get-to-work")
+			return
+		}
 
 		fmt.Print("\n\n")
 
@@ -65,8 +87,17 @@ var Init = cli.Command{
 		if !service.HasCredentials(pt) {
 			token = prompts.PivotalTracker()
 
-			cfg.SaveDefaultConfig()
-			service.SaveCredentials(pt, token)
+			err = cfg.SaveDefaultConfig()
+			if err != nil {
+				color.Red("Could not save .get-to-work")
+				return
+			}
+
+			err = service.SaveCredentials(pt, token)
+			if err != nil {
+				color.Red("Could not save Pivotal Tracker credentials to your keychain.")
+			}
+
 		} else {
 			token, err = service.LoadCredentials(pt)
 			if err != nil {
@@ -74,11 +105,22 @@ var Init = cli.Command{
 			}
 		}
 
-		pt.SignIn(token)
+		err = pt.SignIn(token)
+		if err != nil {
+			color.Red("ERROR: Could not sign into Pivotal Tracker service")
+			fmt.Println(err)
+			return
+		}
+
 		projects, _ := pt.GetProjects()
 		ptproj := prompts.PivotalTrackerChooseProject(projects)
 		cfg.PivotalTracker.ProjectID = strconv.FormatInt(int64(ptproj.Id), 10)
-		cfg.SaveDefaultConfig()
+
+		err = cfg.SaveDefaultConfig()
+		if err != nil {
+			color.Red("Could not save .get-to-work")
+			return
+		}
 
 		return nil
 	},
