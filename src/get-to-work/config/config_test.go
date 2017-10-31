@@ -13,7 +13,7 @@ func TestFromFileNonExistant(t *testing.T) {
 	_, err := FromFile(path)
 
 	if err != nil {
-		t.Error("FromFile should not raise an error")
+		t.Error("From File should not raise an error")
 	}
 
 	fileContent, fileReadErr := ioutil.ReadFile(path)

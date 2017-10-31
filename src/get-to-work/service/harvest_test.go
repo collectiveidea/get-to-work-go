@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/adlio/harvest"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,5 +31,5 @@ func TestProjects(t *testing.T) {
 
 	projects := h.GetProjects()
 	assert.NotEmpty(t, projects)
-	assert.IsType(t, &harvest.Project{}, projects[0])
+	assert.IsType(t, &ProjectAssignment{}, projects[0])
 }
