@@ -1,6 +1,11 @@
 # get-to-work
 Start and stop project specific, annotated Harvest timers with information from Pivotal Tracker
 
+## Installation
+```shell
+$ brew install collectiveidea/formulae/get-to-work
+```
+
 ## Workflow
 
 ### Initialize Your Project Directory
