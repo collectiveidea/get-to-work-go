@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"get-to-work/commands"
-
 	"github.com/urfave/cli"
 )
 
@@ -21,6 +20,7 @@ func main() {
 		commands.Init,
 		commands.Start,
 		commands.Stop,
+		commands.Open,
 	}
 
 	err := app.Run(os.Args)
