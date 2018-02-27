@@ -2,7 +2,7 @@ package prompts
 
 import (
 	"fmt"
-	hs "get-to-work/service"
+	hs "github.com/collectiveidea/get-to-work-go/service"
 
 	"github.com/adlio/harvest"
 	"github.com/fatih/color"

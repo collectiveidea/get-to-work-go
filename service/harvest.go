@@ -108,7 +108,7 @@ func (hs *HarvestService) StartTimer(projectID string, taskID string, notes stri
 	timeEntry.SpentDate = time.Now().UTC().Format("2006-01-02")
 	timeEntry.Notes = notes
 
-	err = hs.API.PostWithoutRedirect("/time_entries", args, timeEntry, &timeEntry)
+	err = hs.API.Post("/time_entries", args, timeEntry, &timeEntry)
 
 	if err != nil {
 		return
@@ -123,7 +123,7 @@ func (hs *HarvestService) Stoptimer(timerEntryID int) (err error) {
 	timeEntry := TimeEntry{}
 	args := harvest.Defaults()
 	url := fmt.Sprintf("/time_entries/%d/stop", timerEntryID)
-	err = hs.API.PatchWithoutRedirect(url, args, timeEntry, &timeEntry)
+	err = hs.API.Patch(url, args, timeEntry, &timeEntry)
 
 	return
 }

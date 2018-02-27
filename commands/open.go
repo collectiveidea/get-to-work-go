@@ -2,7 +2,7 @@ package commands
 
 import (
 	"fmt"
-	"get-to-work/config"
+	"github.com/collectiveidea/get-to-work-go/config"
 	"github.com/fatih/color"
 	"github.com/urfave/cli"
 	"os/exec"

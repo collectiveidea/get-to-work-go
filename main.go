@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"get-to-work/commands"
+	"github.com/collectiveidea/get-to-work-go/commands"
 
 	"github.com/urfave/cli"
 )

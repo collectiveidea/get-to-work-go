@@ -2,9 +2,10 @@ package commands
 
 import (
 	"fmt"
-	"get-to-work/config"
-	"get-to-work/prompts"
-	"get-to-work/service"
+
+	"github.com/collectiveidea/get-to-work-go/config"
+	"github.com/collectiveidea/get-to-work-go/prompts"
+	"github.com/collectiveidea/get-to-work-go/service"
 
 	"strconv"
 

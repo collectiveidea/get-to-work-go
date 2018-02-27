@@ -2,8 +2,8 @@ package commands
 
 import (
 	"fmt"
-	"get-to-work/config"
-	"get-to-work/service"
+	"github.com/collectiveidea/get-to-work-go/config"
+	"github.com/collectiveidea/get-to-work-go/service"
 	"regexp"
 	"strconv"
 
