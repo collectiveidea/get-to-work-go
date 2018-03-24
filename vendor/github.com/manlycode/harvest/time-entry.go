@@ -84,6 +84,6 @@ func (a *API) GetTimeEntriesForUserBetween(userID int64, fromDate time.Time, toD
 func (a *API) StopTimeEntry(timeEntryID int64) (TimeEntry, error) {
 	path := fmt.Sprintf("/time_entries/%d/stop", timeEntryID)
 	entry := TimeEntry{}
-	err := a.Patch("/time_entries", Defaults(), timeEntry, &timeEntry)
+	err := a.Patch(path, Defaults(), entry, &entry)
 	return entry, err
 }

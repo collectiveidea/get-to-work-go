@@ -29,7 +29,7 @@
   branch = "master"
   name = "github.com/manlycode/harvest"
   packages = ["."]
-  revision = "ff3483d4beaf4d33583e1cbaedcb60ddb8cbbd80"
+  revision = "c27139f096dacea9405100fe51e5075f2906fbac"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
