@@ -1,6 +1,7 @@
 package harvest
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -80,10 +81,9 @@ func (a *API) GetTimeEntriesForUserBetween(userID int64, fromDate time.Time, toD
 	return a.GetTimeEntries(args)
 }
 
-func (a *API) StopTimeEntry(timeEntryId int64) (TimeEntry, error) {
-	args := harvest.Defaults()
+func (a *API) StopTimeEntry(timeEntryID int64) (TimeEntry, error) {
 	path := fmt.Sprintf("/time_entries/%d/stop", timeEntryID)
 	entry := TimeEntry{}
-	err := a.Patch("/time_entries", args, timeEntry, &timeEntry)
+	err := a.Patch("/time_entries", Defaults(), timeEntry, &timeEntry)
 	return entry, err
 }

@@ -4,12 +4,14 @@
 [[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
-  revision = "ecdeabc65495df2dec95d7c4a4c3e021903035e5"
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/fatih/color"
   packages = ["."]
-  revision = "5df930a27be2502f99b292b7cc09ebad4d0891f4"
+  revision = "507f6050b8568533fb3f5504de8e5205fa62a114"
+  version = "v1.6.0"
 
 [[projects]]
   branch = "master"
@@ -27,22 +29,25 @@
   branch = "master"
   name = "github.com/manlycode/harvest"
   packages = ["."]
-  revision = "605796e439103e0b245592873f74a99735766039"
+  revision = "ff3483d4beaf4d33583e1cbaedcb60ddb8cbbd80"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
   packages = ["."]
-  revision = "ad5389df28cdac544c99bd7b9161a0b5b6ca9d1b"
+  revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
+  version = "v0.0.9"
 
 [[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "a5cdd64afdee435007ee3e9f6ed4684af949d568"
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
 
 [[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
-  revision = "f15c970de5b76fac0b59abb32d62c17cc7bed265"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -59,30 +64,35 @@
 [[projects]]
   name = "github.com/stretchr/testify"
   packages = ["assert"]
-  revision = "2aa2c176b9dab406a6970f6a55f513e8a8c8b18f"
+  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
+  version = "v1.2.1"
 
 [[projects]]
+  branch = "master"
   name = "github.com/tmc/keyring"
   packages = ["."]
-  revision = "06e6283d50adc5f8fcdb3cdf33ee1244d4400ae1"
+  revision = "839169085ae146fc7a34bcb34dfd7ab216d23991"
 
 [[projects]]
   name = "github.com/urfave/cli"
   packages = ["."]
-  revision = "7bc6a0acffa589f415f88aca16cc1de5ffd66f9c"
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "2509b142fb2b797aa7587dad548f113b2c0f20ce"
+  revision = "88942b9c40a4c9d203b82b3731787b672d6e809b"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows"
   ]
-  revision = "b98136db334ff9cb24f28a68e3be3cb6608f7630"
+  revision = "91ee8cde435411ca3f1cd365e8f20131aed4d0a1"
 
 [[projects]]
   name = "gopkg.in/salsita/go-pivotaltracker.v1"
@@ -93,6 +103,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7fbcb38f37aac340985dbe0706c1c90be8d689c66b672b2bb027be9be5a828ea"
+  inputs-digest = "ceb9b37cb2412e84cbb04ca74d6faed8f3ec934a7919d539f04c5ff05774d579"
   solver-name = "gps-cdcl"
   solver-version = 1
