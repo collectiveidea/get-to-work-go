@@ -2,11 +2,6 @@
 
 
 [[projects]]
-  name = "github.com/adlio/harvest"
-  packages = ["."]
-  revision = "de066d5be8ff0ea1c521615a55cbc916e6cadd4d"
-
-[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "ecdeabc65495df2dec95d7c4a4c3e021903035e5"
@@ -27,6 +22,12 @@
   name = "github.com/howeyc/gopass"
   packages = ["."]
   revision = "bf9dde6d0d2c004a008c27aaee91170c786f6db8"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/manlycode/harvest"
+  packages = ["."]
+  revision = "605796e439103e0b245592873f74a99735766039"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -92,6 +93,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cc85d8a5f4128cd50c3bcdf0e845e97dba3e15b558faac7b9e1c596525dadedf"
+  inputs-digest = "7fbcb38f37aac340985dbe0706c1c90be8d689c66b672b2bb027be9be5a828ea"
   solver-name = "gps-cdcl"
   solver-version = 1

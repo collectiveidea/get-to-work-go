@@ -30,6 +30,10 @@
   name = "github.com/segmentio/go-prompt"
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/manlycode/harvest"
+
+[[constraint]]
   name = "gopkg.in/salsita/go-pivotaltracker.v1"
   version = "1.4.0"
 

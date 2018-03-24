@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/adlio/harvest"
+	"github.com/manlycode/harvest"
 )
 
 // HarvestService defines a harvest service

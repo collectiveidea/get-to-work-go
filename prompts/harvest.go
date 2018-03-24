@@ -4,8 +4,8 @@ import (
 	"fmt"
 	hs "github.com/collectiveidea/get-to-work-go/service"
 
-	"github.com/adlio/harvest"
 	"github.com/fatih/color"
+	"github.com/manlycode/harvest"
 	"github.com/segmentio/go-prompt"
 )
 
