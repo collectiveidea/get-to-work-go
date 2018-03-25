@@ -33,11 +33,6 @@ $ get-to-work stop
 ```
 
 ## Contributing
-Install development dependencies:
-```shell
-$ brew install direnv
-$ go get github.com/constabulary/gb/...
-```
 
 Setup your environment:
 ```shell
@@ -48,5 +43,5 @@ $ direnv allow
 
 Run the tests:
 ```shell
-$ gb test
+$ go test ./...
 ```
